@@ -1,0 +1,7 @@
+{
+  "ado": {
+    "defaultApiVersion": "7.0",
+    "poolApiVersion": "7.1",
+    "policyEvaluationApiVersion": "7.1-preview.1"
+  }
+}

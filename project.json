@@ -1,0 +1,46 @@
+{
+  "ProjectName": "Gerber.AzureDevOps",
+  "Description": "Azure DevOps tools for Gerber, including repositories, branches, pipelines, and work items.",
+  "Version": "0.1.0",
+  "Preamble": [
+    "Set-StrictMode -Version Latest",
+    "$ErrorActionPreference = 'Stop'"
+  ],
+  "Manifest": {
+    "GUID": "a468dee5-c7a0-43e4-ae88-bb19158fe679",
+    "Author": "AzureDevOps",
+    "PowerShellHostVersion": "7.4",
+    "RequiredModules": [],
+    "PrivateData": {
+      "Gerber": {
+        "Plugin": true,
+        "Namespace": "ado",
+        "ApiVersion": "1",
+        "MinimumGerberVersion": "0.2.1-preview02",
+        "Repository": {
+          "Uri": "https://www.powershellgallery.com/api/v2",
+          "Name": "PSGallery"
+        }
+      }
+    }
+  },
+  "Pester": {
+    "CodeCoverage": {
+      "Enabled": true,
+      "Path": [
+        "src/public/*.ps1",
+        "src/private/**/*.ps1"
+      ],
+      "CoveragePercentTarget": 90,
+      "OutputPath": "artifacts/coverage.xml",
+      "OutputFormat": "JaCoCo"
+    },
+    "TestResult": {
+      "Enabled": true,
+      "OutputFormat": "NUnitXml"
+    },
+    "Output": {
+      "Verbosity": "Normal"
+    }
+  }
+}
