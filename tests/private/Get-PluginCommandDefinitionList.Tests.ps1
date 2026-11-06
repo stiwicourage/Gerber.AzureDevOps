@@ -11,3 +11,14 @@ Describe 'Get-PluginCommandDefinitionList' {
         $commands[0].Handler | Should -BeOfType ([scriptblock])
     }
 }
+
+Describe 'Invoke-AdoCommandHandler' {
+    It 'returns only $false even when the wrapped handler emits output' {
+        function Invoke-NoisyHandlerStub { 'noise'; 'more noise' }
+
+        $result = Invoke-AdoCommandHandler -HandlerName 'Invoke-NoisyHandlerStub' -Command $null
+
+        @($result).Count | Should -Be 1
+        $result | Should -BeFalse
+    }
+}

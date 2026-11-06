@@ -19,9 +19,9 @@ function Invoke-AdoCommandHandler {
     param([string]$HandlerName, [pscustomobject]$Command)
 
     if ($HandlerName -in @('Show-GerberRepositoryCreateView', 'Show-GerberPipelinesTagsView')) {
-        & $HandlerName -Command $Command
+        $null = & $HandlerName -Command $Command
     } else {
-        & $HandlerName
+        $null = & $HandlerName
     }
     return $false
 }
