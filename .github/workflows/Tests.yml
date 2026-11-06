@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  tests:
+    uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@develop
+    with:
+      install-command: >-
+        Install-PSResource -Name NovaModuleTools, KeepAChangelog, PSScriptAnalyzer, Pester
+        -Repository PSGallery -TrustRepository -Reinstall
+      test-command: >-
+        ./scripts/Invoke-ScriptAnalyzerCI.ps1; Invoke-NovaBuild; Invoke-NovaTest
+      codescene-enabled: false
+    secrets: inherit
