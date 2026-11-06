@@ -18,10 +18,6 @@ jobs:
   tests:
     uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@develop
     with:
-      install-command: >-
-        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted;
-        foreach ($name in 'NovaModuleTools', 'KeepAChangelog', 'PSScriptAnalyzer') {
-        Install-Module -Name $name -Repository PSGallery -AllowPrerelease -Scope CurrentUser -Force -ErrorAction Stop }
       test-command: >-
         ./scripts/Invoke-ScriptAnalyzerCI.ps1; Invoke-NovaBuild; Invoke-NovaTest
       codescene-enabled: true
