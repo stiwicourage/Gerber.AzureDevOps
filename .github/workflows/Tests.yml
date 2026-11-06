@@ -24,5 +24,5 @@ jobs:
         Install-Module -Name $name -Repository PSGallery -AllowPrerelease -Scope CurrentUser -Force -ErrorAction Stop }
       test-command: >-
         ./scripts/Invoke-ScriptAnalyzerCI.ps1; Invoke-NovaBuild; Invoke-NovaTest
-      codescene-enabled: false
+      codescene-enabled: true
     secrets: inherit

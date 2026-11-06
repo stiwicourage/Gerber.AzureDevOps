@@ -1,0 +1,19 @@
+name: Publish Module
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  publish:
+    uses: stiwicourage/powershell-ci/.github/workflows/publish.yml@develop
+    with:
+      install-command: >-
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted;
+        foreach ($name in 'NovaModuleTools', 'KeepAChangelog') {
+        Install-Module -Name $name -Repository PSGallery -AllowPrerelease -Scope CurrentUser -Force -ErrorAction Stop }
+      release-continuous-integration: true
+    secrets: inherit
