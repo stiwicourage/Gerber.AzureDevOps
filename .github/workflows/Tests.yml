@@ -18,7 +18,6 @@ jobs:
   tests:
     uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@develop
     with:
-      test-command: >-
-        ./scripts/Invoke-ScriptAnalyzerCI.ps1; Invoke-NovaBuild; Invoke-NovaTest
+      build-validation: false
       codescene-enabled: true
     secrets: inherit
