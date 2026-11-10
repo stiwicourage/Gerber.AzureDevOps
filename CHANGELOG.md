@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.2.0] - 2026-11-10
+
+### Added
+
 - Extracted Azure DevOps reports, repository provisioning, branch policies, pipelines,
   work-item helpers and native REST retry/pagination/RAW handling.
 - Nine registered product paths retain their original Core root names.
@@ -19,12 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - PAT access uses GUID-owned logical Secrets paths; no automatic legacy credential access.
 - Minimum Gerber Core version is `0.2.1-preview02`; plugin version and GUID are unchanged.
 
-### Deprecated
-
 ### Removed
 
 - Hello scaffolding and dependency on the removed Core Ado API.
 
-### Fixed
-
-### Security
