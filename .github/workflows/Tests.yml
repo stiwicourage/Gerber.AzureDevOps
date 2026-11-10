@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   tests:
-    uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@develop
+    uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@0.1.0
     with:
       build-validation: false
       codescene-enabled: true
