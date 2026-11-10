@@ -1,7 +1,7 @@
 {
   "ProjectName": "Gerber.AzureDevOps",
   "Description": "Azure DevOps tools for Gerber, including repositories, branches, pipelines, and work items.",
-  "Version": "0.2.0-preview02",
+  "Version": "0.2.0-preview03",
   "Preamble": [
     "Set-StrictMode -Version Latest",
     "$ErrorActionPreference = 'Stop'"
