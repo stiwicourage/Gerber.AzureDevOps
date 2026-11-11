@@ -64,14 +64,14 @@ def _assert_ado_interrupt(context, configuration: str) -> None:
     title="Native Ctrl-C stops an Azure DevOps action prompt without continuing",
     categories=("ado", "cancellation"),
     metadata=ScenarioMetadata(
-        commands=("branch find",), workflows=("interrupt:ado-action",),
+        commands=("ado branch find",), workflows=("interrupt:ado-action",),
         coverage=("dispatch", "navigation", "rendering"),
     ),
 )
 def ado_ctrl_c_branch_find(context) -> None:
     _start_ado_scenario(context, strict_http_fixture([]))
     configuration = (context.app.runtime_paths.scenario_root / "Gerber.AzureDevOps.json").read_text(encoding="utf-8")
-    context.app.type("/branch find")
+    context.app.type("/ado branch find")
     context.app.press("ENTER")
     context.app.wait_for_text("Branch path")
     context.app.type("unfinished-branch")
@@ -83,7 +83,7 @@ def ado_ctrl_c_branch_find(context) -> None:
     title="Native Ctrl-C stops a secure Azure DevOps PAT prompt without storing input",
     categories=("ado", "cancellation", "credentials"),
     metadata=ScenarioMetadata(
-        commands=("list ado-agents",), workflows=("interrupt:ado-credential",),
+        commands=("ado list agents",), workflows=("interrupt:ado-credential",),
         coverage=("dispatch", "navigation", "rendering"),
     ),
 )
@@ -93,7 +93,7 @@ def ado_ctrl_c_pat_setup(context) -> None:
     context.app.start(http_fixture=strict_http_fixture([]))
     configuration = (context.app.runtime_paths.scenario_root / "Gerber.AzureDevOps.json").read_text(encoding="utf-8")
     context.app.wait_for_prompt()
-    context.app.type("/list ado-agents")
+    context.app.type("/ado list agents")
     context.app.press("ENTER")
     context.app.wait_for_text("Configure PAT")
     context.app.press("ENTER")
@@ -383,14 +383,14 @@ def _select_action_confirmation(context, *, default_cancel: bool = False) -> Non
     title="Core ADO agent report",
     categories=("core", "mission", "ado"),
     metadata=ScenarioMetadata(
-        commands=("list ado-agents",),
-        workflows=("command:list ado-agents",),
+        commands=("ado list agents",),
+        workflows=("command:ado list agents",),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def ado_agents_success(context) -> None:
     _start_ado_scenario(context, _agent_fixture())
-    context.app.type("/list ado-agents")
+    context.app.type("/ado list agents")
     context.app.press("ENTER")
     context.app.wait_for_text("Build Pool")
     context.app.wait_for_text("deploy-01")
@@ -404,14 +404,14 @@ def ado_agents_success(context) -> None:
     title="Core ADO agent report recovery",
     categories=("core", "mission", "ado", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("list ado-agents",),
-        workflows=("command:list ado-agents", "network:controlled-failure"),
+        commands=("ado list agents",),
+        workflows=("command:ado list agents", "network:controlled-failure"),
         coverage=("error-recovery",),
     ),
 )
 def ado_agents_recovery(context) -> None:
     _start_ado_scenario(context, strict_http_fixture([]))
-    context.app.type("/list ado-agents")
+    context.app.type("/ado list agents")
     context.app.press("ENTER")
     context.app.wait_for_text("Unexpected Gerber Core terminal HTTP request.")
     context.app.press("ENTER")
@@ -424,14 +424,14 @@ def ado_agents_recovery(context) -> None:
     title="Core ADO team member selection",
     categories=("core", "mission", "ado", "selection"),
     metadata=ScenarioMetadata(
-        commands=("list ado-team-members",),
-        workflows=("command:list ado-team-members",),
+        commands=("ado list team-members",),
+        workflows=("command:ado list team-members",),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def ado_team_members(context) -> None:
     _start_ado_scenario(context, _team_fixture())
-    context.app.type("/list ado-team-members")
+    context.app.type("/ado list team-members")
     context.app.press("ENTER")
     context.app.wait_for_text("Export or continue")
     context.app.press("ENTER")
@@ -448,14 +448,14 @@ def ado_team_members(context) -> None:
     title="Core ADO team member recovery",
     categories=("core", "mission", "ado", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("list ado-team-members",),
-        workflows=("command:list ado-team-members", "network:controlled-failure"),
+        commands=("ado list team-members",),
+        workflows=("command:ado list team-members", "network:controlled-failure"),
         coverage=("error-recovery",),
     ),
 )
 def ado_team_members_recovery(context) -> None:
     _start_ado_scenario(context, strict_http_fixture([]))
-    context.app.type("/list ado-team-members")
+    context.app.type("/ado list team-members")
     context.app.press("ENTER")
     context.app.wait_for_text("could not read Azure DevOps projects")
     context.app.press("ENTER")
@@ -468,14 +468,14 @@ def ado_team_members_recovery(context) -> None:
     title="Core branch search",
     categories=("core", "mission", "ado"),
     metadata=ScenarioMetadata(
-        commands=("branch find",),
-        workflows=("command:branch find",),
+        commands=("ado branch find",),
+        workflows=("command:ado branch find",),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def branch_find(context) -> None:
     _start_ado_scenario(context, _branch_find_fixture())
-    context.app.type("/branch find")
+    context.app.type("/ado branch find")
     context.app.press("ENTER")
     context.app.wait_for_text("Branch path")
     context.app.type("main")
@@ -513,19 +513,19 @@ def _run_ado_failure_recovery(
     title="Core branch workflow failure recovery",
     categories=("core", "mission", "ado", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("branch find", "branch set-default", "branch set-searchable"),
+        commands=("ado branch find", "ado branch set-default", "ado branch set-searchable"),
         workflows=("network:controlled-failure",),
         coverage=("error-recovery",),
     ),
 )
 def branch_failure_recovery(context) -> None:
-    _run_ado_failure_recovery(context, "branch find", [("Branch path", "main")])
+    _run_ado_failure_recovery(context, "ado branch find", [("Branch path", "main")])
     context.app.close()
-    _run_ado_failure_recovery(context, "branch set-default", [("Branch name", "main")])
+    _run_ado_failure_recovery(context, "ado branch set-default", [("Branch name", "main")])
     context.app.close()
     _run_ado_failure_recovery(
         context,
-        "branch set-searchable",
+        "ado branch set-searchable",
         [("Branch names", "main"), ("Mode", "")],
     )
 
@@ -535,7 +535,7 @@ def branch_failure_recovery(context) -> None:
     title="Core pipeline tag workflow failure recovery",
     categories=("core", "mission", "ado", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("pipelines tags delete", "pipelines tags update"),
+        commands=("ado pipelines tags delete", "ado pipelines tags update"),
         workflows=("network:controlled-failure",),
         coverage=("error-recovery",),
     ),
@@ -543,14 +543,14 @@ def branch_failure_recovery(context) -> None:
 def pipeline_tag_failure_recovery(context) -> None:
     _run_ado_failure_recovery(
         context,
-        "pipelines tags delete",
+        "ado pipelines tags delete",
         [("Current tag", "old")],
         "could not read Azure DevOps builds",
     )
     context.app.close()
     _run_ado_failure_recovery(
         context,
-        "pipelines tags update",
+        "ado pipelines tags update",
         [("Current tag", "old"), ("New tag", "new")],
         "could not read Azure DevOps builds",
     )
@@ -580,14 +580,14 @@ def _register_cancel_scenario(
     title="Core branch default mutation",
     categories=("core", "mission", "ado", "mutation"),
     metadata=ScenarioMetadata(
-        commands=("branch set-default",),
-        workflows=("command:branch set-default", "mutation:default-branch"),
+        commands=("ado branch set-default",),
+        workflows=("command:ado branch set-default", "mutation:default-branch"),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def branch_set_default(context) -> None:
     _start_ado_scenario(context, _branch_set_default_fixture())
-    context.app.type("/branch set-default")
+    context.app.type("/ado branch set-default")
     context.app.press("ENTER")
     context.app.wait_for_text("Branch name")
     context.app.type("main")
@@ -611,14 +611,14 @@ def branch_set_default(context) -> None:
     title="Core searchable branch policy mutation",
     categories=("core", "mission", "ado", "mutation"),
     metadata=ScenarioMetadata(
-        commands=("branch set-searchable",),
-        workflows=("command:branch set-searchable", "mutation:searchable-branch-policy"),
+        commands=("ado branch set-searchable",),
+        workflows=("command:ado branch set-searchable", "mutation:searchable-branch-policy"),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def branch_set_searchable(context) -> None:
     _start_ado_scenario(context, _branch_set_searchable_fixture())
-    context.app.type("/branch set-searchable")
+    context.app.type("/ado branch set-searchable")
     context.app.press("ENTER")
     context.app.wait_for_text("Branch names")
     context.app.type("main")
@@ -640,7 +640,7 @@ def branch_set_searchable(context) -> None:
 
 
 def _run_pipeline_tag_mutation(context, *, update: bool) -> None:
-    command = "pipelines tags update" if update else "pipelines tags delete"
+    command = "ado pipelines tags update" if update else "ado pipelines tags delete"
     _start_ado_scenario(context, _pipeline_tag_fixture(update=update))
     context.app.type(f"/{command}")
     context.app.press("ENTER")
@@ -669,8 +669,8 @@ def _run_pipeline_tag_mutation(context, *, update: bool) -> None:
     title="Core pipeline tag delete mutation",
     categories=("core", "mission", "ado", "mutation"),
     metadata=ScenarioMetadata(
-        commands=("pipelines tags delete",),
-        workflows=("command:pipelines tags delete", "mutation:delete-build-tag"),
+        commands=("ado pipelines tags delete",),
+        workflows=("command:ado pipelines tags delete", "mutation:delete-build-tag"),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
@@ -683,8 +683,8 @@ def pipeline_tags_delete(context) -> None:
     title="Core pipeline tag update mutation",
     categories=("core", "mission", "ado", "mutation"),
     metadata=ScenarioMetadata(
-        commands=("pipelines tags update",),
-        workflows=("command:pipelines tags update", "mutation:update-build-tag"),
+        commands=("ado pipelines tags update",),
+        workflows=("command:ado pipelines tags update", "mutation:update-build-tag"),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
@@ -697,9 +697,9 @@ def pipeline_tags_update(context) -> None:
     title="Core repository create complete isolated provisioning",
     categories=("core", "mission", "ado", "mutation"),
     metadata=ScenarioMetadata(
-        commands=("repository create",),
+        commands=("ado repository create",),
         workflows=(
-            "command:repository create",
+            "command:ado repository create",
             "mutation:create-repository",
             "mutation:initial-commit",
             "mutation:create-pipeline",
@@ -719,9 +719,9 @@ def repository_create(context) -> None:
     title="Core repository create controlled failure recovery",
     categories=("core", "mission", "ado", "mutation", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("repository create",),
+        commands=("ado repository create",),
         workflows=(
-            "command:repository create",
+            "command:ado repository create",
             "mutation:create-repository",
             "network:controlled-failure",
         ),
@@ -765,7 +765,7 @@ def _repository_create_scenario_options(success: bool) -> dict:
 
 
 def _complete_repository_create_input(context) -> None:
-    context.app.type("/repository create")
+    context.app.type("/ado repository create")
     context.app.press("ENTER")
     context.app.wait_for_text("Project")
     context.app.wait_for_text("TerminalProject")
@@ -813,13 +813,13 @@ def _assert_repository_create_trace(context, *, success: bool) -> None:
 
 
 for _command, _prompt in (
-    ("branch find", "Branch path"),
-    ("branch set-default", "Branch name"),
-    ("branch set-searchable", "Branch name"),
-    ("pipelines tags delete", "Current tag"),
-    ("pipelines tags update", "Current tag"),
+    ("ado branch find", "Branch path"),
+    ("ado branch set-default", "Branch name"),
+    ("ado branch set-searchable", "Branch name"),
+    ("ado pipelines tags delete", "Current tag"),
+    ("ado pipelines tags update", "Current tag"),
 ):
-    _register_cancel_scenario(f"ado-cancel-{_command.replace(' ', '-')}", _command, _prompt)
+    _register_cancel_scenario(f"ado-cancel-{_command.removeprefix('ado ').replace(' ', '-')}", _command, _prompt)
 
 
 @scenario(
@@ -827,8 +827,8 @@ for _command, _prompt in (
     title="GUID-owned PAT use leaves legacy credentials untouched",
     categories=("ado", "credentials", "isolation"),
     metadata=ScenarioMetadata(
-        commands=("list ado-agents",),
-        workflows=("command:list ado-agents", "credentials:guid-isolation"),
+        commands=("ado list agents",),
+        workflows=("command:ado list agents", "credentials:guid-isolation"),
         coverage=("dispatch", "workflow"),
     ),
 )
@@ -842,7 +842,7 @@ def legacy_pat_untouched(context) -> None:
     context.app.register_sensitive_value(legacy_pat)
     context.app.start(http_fixture=_agent_fixture())
     context.app.wait_for_prompt()
-    context.app.type("/list ado-agents")
+    context.app.type("/ado list agents")
     context.app.press("ENTER")
     context.app.wait_for_text("build-01")
     state = context.app.credential_state()

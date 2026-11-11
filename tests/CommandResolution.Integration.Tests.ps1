@@ -23,16 +23,16 @@ AfterAll {
 }
 
 Describe 'Extracted product command routing' {
-    It 'resolves /<Path> with the original root and arguments' -ForEach @(
-        @{ Path = 'list ado-agents'; Root = 'list'; Arguments = @('ado-agents') }
-        @{ Path = 'list ado-team-members'; Root = 'list'; Arguments = @('ado-team-members') }
-        @{ Path = 'branch find'; Root = 'branch'; Arguments = @('find') }
-        @{ Path = 'branch set-default'; Root = 'branch'; Arguments = @('set-default') }
-        @{ Path = 'branch set-searchable'; Root = 'branch'; Arguments = @('set-searchable') }
-        @{ Path = 'repository create'; Root = 'repository'; Arguments = @('create') }
-        @{ Path = 'pipelines tags'; Root = 'pipelines'; Arguments = @('tags') }
-        @{ Path = 'pipelines tags delete'; Root = 'pipelines'; Arguments = @('tags', 'delete') }
-        @{ Path = 'pipelines tags update'; Root = 'pipelines'; Arguments = @('tags', 'update') }
+    It 'resolves /<Path> under the ado namespace root with its arguments' -ForEach @(
+        @{ Path = 'ado list agents'; Root = 'ado'; Arguments = @('list', 'agents') }
+        @{ Path = 'ado list team-members'; Root = 'ado'; Arguments = @('list', 'team-members') }
+        @{ Path = 'ado branch find'; Root = 'ado'; Arguments = @('branch', 'find') }
+        @{ Path = 'ado branch set-default'; Root = 'ado'; Arguments = @('branch', 'set-default') }
+        @{ Path = 'ado branch set-searchable'; Root = 'ado'; Arguments = @('branch', 'set-searchable') }
+        @{ Path = 'ado repository create'; Root = 'ado'; Arguments = @('repository', 'create') }
+        @{ Path = 'ado pipelines tags'; Root = 'ado'; Arguments = @('pipelines', 'tags') }
+        @{ Path = 'ado pipelines tags delete'; Root = 'ado'; Arguments = @('pipelines', 'tags', 'delete') }
+        @{ Path = 'ado pipelines tags update'; Root = 'ado'; Arguments = @('pipelines', 'tags', 'update') }
     ) {
         $resolved = & $core { param($InputText) Resolve-GerberCommand -InputText $InputText } "/$Path"
         $resolved.IsValid | Should -BeTrue
@@ -44,16 +44,27 @@ Describe 'Extracted product command routing' {
         $snapshot = & $core {
             [pscustomobject]@{
                 Search = Resolve-GerberCommand -InputText ado
-                Tags = Resolve-GerberCommand -InputText '/pipelines tags'
-                Create = Resolve-GerberCommand -InputText '/repository create'
-                Branch = Resolve-GerberCommand -InputText '/branch'
+                Tags = Resolve-GerberCommand -InputText '/ado pipelines tags'
+                Create = Resolve-GerberCommand -InputText '/ado repository create'
+                Branch = Resolve-GerberCommand -InputText '/ado branch'
             }
         }
-        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/list ado-agents', '/list ado-team-members')
-        $snapshot.Tags.Suggestions.DisplayText | Should -Be @('/pipelines tags delete', '/pipelines tags update')
-        $snapshot.Branch.Suggestions.DisplayText | Should -Be @('/branch find', '/branch set-default', '/branch set-searchable')
-        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/repository create nuget'
-        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/repository create domain'
-        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/repository create cdm'
+        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/ado branch find', '/ado branch set-default', '/ado branch set-searchable', '/ado list agents', '/ado list team-members', '/ado pipelines tags delete', '/ado pipelines tags update', '/ado repository create')
+        $snapshot.Tags.Suggestions.DisplayText | Should -Be @('/ado pipelines tags delete', '/ado pipelines tags update')
+        $snapshot.Branch.Suggestions.DisplayText | Should -Be @('/ado branch find', '/ado branch set-default', '/ado branch set-searchable')
+        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create nuget'
+        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create domain'
+        $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create cdm'
+    }
+
+    It 'no longer resolves the former top-level path /<Path>' -ForEach @(
+        @{ Path = 'list ado-agents' }
+        @{ Path = 'list ado-team-members' }
+        @{ Path = 'repository create' }
+        @{ Path = 'branch find' }
+        @{ Path = 'pipelines tags' }
+    ) {
+        $resolved = & $core { param($InputText) Resolve-GerberCommand -InputText $InputText } "/$Path"
+        $resolved.IsValid | Should -BeFalse
     }
 }

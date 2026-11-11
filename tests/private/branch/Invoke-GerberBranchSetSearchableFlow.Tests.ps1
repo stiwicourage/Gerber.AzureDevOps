@@ -233,7 +233,7 @@ Describe 'Show-GerberSearchableBranchPreview' {
             CreateList = @(); UpdateList = @(); AlreadyAlignedList = @()
         })
 
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/branch set-searchable' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado branch set-searchable' }
     }
 }
 
@@ -328,7 +328,7 @@ Describe 'Show-GerberBranchSetSearchableHeader' {
 
         Show-GerberBranchSetSearchableHeader
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-searchable' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-searchable' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }
@@ -340,8 +340,8 @@ Describe 'Show-GerberSearchableBranchApplyScreen' {
 
         Show-GerberSearchableBranchApplyScreen
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-searchable' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/branch set-searchable' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-searchable' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado branch set-searchable' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }
@@ -354,7 +354,7 @@ Describe 'Show-GerberSearchableBranchNoOpResult' {
 
         Show-GerberSearchableBranchNoOpResult -Report $report
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-searchable' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-searchable' }
         Should -Invoke Write-GerberScreenLine -Times 3
     }
 }
@@ -443,7 +443,7 @@ Describe 'Show-GerberSearchableBranchApplyResult' {
 
         Show-GerberSearchableBranchApplyResult -Results $results
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-searchable' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-searchable' }
         Should -Invoke Write-GerberSearchableBranchResultSummary -Times 1 -ParameterFilter {
             $Created.Count -eq 1 -and $Updated.Count -eq 1 -and
             $Failed.Count -eq 1 -and $Unchanged -eq 3

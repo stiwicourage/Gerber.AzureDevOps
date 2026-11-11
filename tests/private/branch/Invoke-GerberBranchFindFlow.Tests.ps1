@@ -230,14 +230,14 @@ Describe 'Wait-GerberBranchFindContinue' {
 }
 
 Describe 'Show-GerberBranchFindHeader' {
-    It 'clears the host and writes the branch find route header' {
+    It 'clears the host and writes the ado branch find route header' {
         Mock Start-GerberScreen {}
         Mock Write-GerberScreenLine {}
 
         Show-GerberBranchFindHeader
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch find' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/branch find' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch find' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado branch find' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }

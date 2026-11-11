@@ -11,7 +11,7 @@ Describe 'Invoke-GerberPipelineTagUpdate' {
 
         Should -Invoke Invoke-GerberPipelineTagMutation -Times 1 -ParameterFilter {
             $Operation.Mode -eq 'update' -and
-            $Operation.CommandLabel -eq '/pipelines tags update' -and
+            $Operation.CommandLabel -eq '/ado pipelines tags update' -and
             $Operation.TracePrefix -eq 'pipelines-tags-update'
         }
     }

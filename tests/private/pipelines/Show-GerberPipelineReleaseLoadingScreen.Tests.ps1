@@ -8,10 +8,10 @@ Describe 'Show-GerberPipelineReleaseLoadingScreen' {
         Mock Show-GerberPipelineReleaseHeader {}
         Mock Write-GerberScreenLine {}
 
-        Show-GerberPipelineReleaseLoadingScreen -CommandLabel '/pipelines tags delete' -Text 'Loading matching pipeline runs...'
+        Show-GerberPipelineReleaseLoadingScreen -CommandLabel '/ado pipelines tags delete' -Text 'Loading matching pipeline runs...'
 
         Should -Invoke Show-GerberPipelineReleaseHeader -Times 1 -ParameterFilter {
-            $CommandLabel -eq '/pipelines tags delete'
+            $CommandLabel -eq '/ado pipelines tags delete'
         }
         Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter {
             $Text -eq 'Loading matching pipeline runs...'

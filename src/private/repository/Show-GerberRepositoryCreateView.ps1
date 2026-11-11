@@ -57,8 +57,8 @@ function Show-GerberRepositoryCreateHeader {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/repository create'
-    Write-GerberScreenLine -Text '/repository create'
+    Start-GerberScreen -Name '/ado repository create'
+    Write-GerberScreenLine -Text '/ado repository create'
     Write-GerberScreenLine
 }
 

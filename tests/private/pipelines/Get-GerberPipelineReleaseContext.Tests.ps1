@@ -8,12 +8,12 @@ Describe 'Get-GerberPipelineReleaseContext' {
         Mock Get-GerberAdoConfiguration { [pscustomobject]@{ CredentialIdentifier = 'gerber:ado:example:pat' } }
         Mock Resolve-GerberAdoPat { 'pat-value' }
 
-        $result = Get-GerberPipelineReleaseContext -CommandLabel '/pipelines tags update'
+        $result = Get-GerberPipelineReleaseContext -CommandLabel '/ado pipelines tags update'
 
         $result.Configuration.CredentialIdentifier | Should -Be 'gerber:ado:example:pat'
         $result.Pat | Should -Be 'pat-value'
         Should -Invoke Resolve-GerberAdoPat -Times 1 -ParameterFilter {
-            $CommandLabel -eq '/pipelines tags update'
+            $CommandLabel -eq '/ado pipelines tags update'
         }
     }
 

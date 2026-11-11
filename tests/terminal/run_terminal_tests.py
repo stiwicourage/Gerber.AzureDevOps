@@ -65,8 +65,8 @@ def select_scenarios(parser, options):
 def assert_product_coverage(selected):
     covered = {command for item in selected for command in item.commands}
     required = {
-        "list ado-agents", "list ado-team-members", "repository create", "branch find",
-        "branch set-searchable", "branch set-default", "pipelines tags delete", "pipelines tags update",
+        "ado list agents", "ado list team-members", "ado repository create", "ado branch find",
+        "ado branch set-searchable", "ado branch set-default", "ado pipelines tags delete", "ado pipelines tags update",
     }
     if not required.issubset(covered):
         raise AssertionError(f"Uncovered product paths: {sorted(required - covered)}")

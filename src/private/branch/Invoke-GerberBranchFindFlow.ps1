@@ -18,8 +18,8 @@ function Show-GerberBranchFindHeader {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/branch find'
-    Write-GerberScreenLine -Text '/branch find'
+    Start-GerberScreen -Name '/ado branch find'
+    Write-GerberScreenLine -Text '/ado branch find'
     Write-GerberScreenLine
 }
 
@@ -78,8 +78,8 @@ function Show-GerberBranchFindResult {
         [pscustomobject]$Result
     )
 
-    Start-GerberScreen -Name '/branch find'
-    Write-GerberScreenLine -Text '/branch find'
+    Start-GerberScreen -Name '/ado branch find'
+    Write-GerberScreenLine -Text '/ado branch find'
     Write-GerberScreenLine
     Write-GerberBranchMatchResult -Result $Result
     if ($Result.FailedList.Count -gt 0) {

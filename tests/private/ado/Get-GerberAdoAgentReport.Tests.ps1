@@ -86,7 +86,8 @@ Describe 'Get-GerberAdoAgentReport' {
 
             return @{
                 value = @(
-                    @{ name = 'agent-01'; version = '3.225.0'; status = 'online' }
+                    @{ name = 'agent-01'; version = '3.225.0'; status = 'online'; osDescription = 'Linux 5.15.0-1057-azure #65-Ubuntu SMP' }
+                    @{ name = 'agent-02'; version = '3.225.0'; status = 'online' }
                 )
             }
         }
@@ -97,6 +98,8 @@ Describe 'Get-GerberAdoAgentReport' {
         $poolList[0].Name | Should -Be 'Build Pool'
         $agentList[0].Version | Should -Be '3.225.0'
         $agentList[0].Status | Should -Be 'online'
+        $agentList[0].OperatingSystem | Should -Be 'Linux'
+        $agentList[1].OperatingSystem | Should -Be 'unknown'
     }
 
     It 'builds the expected Azure DevOps pool and agent URIs' {
@@ -128,5 +131,7 @@ Describe 'Get-GerberAdoAgentReport' {
         (Get-GerberAdoResponseValueList -Response ([pscustomobject]@{ other = 1 })) | Should -BeNullOrEmpty
         (Get-GerberAdoAgentPropertyText -Agent ([pscustomobject]@{ version = '' }) -PropertyName 'version') | Should -Be 'unknown'
         (Get-GerberAdoAgentPropertyText -Agent ([pscustomobject]@{ status = '' }) -PropertyName 'status') | Should -Be 'unknown'
+        (Get-GerberAdoAgentPropertyText -Agent ([pscustomobject]@{ version = '1' }) -PropertyName 'osDescription') | Should -Be 'unknown'
+        (Get-GerberAdoAgentPropertyText -Agent @{ osDescription = 'Linux' } -PropertyName 'osDescription') | Should -Be 'Linux'
     }
 }

@@ -24,7 +24,7 @@ function Show-GerberPipelinesTagsView {
             }
             default {
                 throw [System.ArgumentException]::new(
-                    "Unknown pipelines tags subcommand '$subcommand'. Use /pipelines tags update or /pipelines tags delete."
+                    "Unknown pipelines tags subcommand '$subcommand'. Use /ado pipelines tags update or /ado pipelines tags delete."
                 )
             }
         }
@@ -41,7 +41,7 @@ function Read-GerberPipelinesTagsSubcommand {
 
     try {
         return Get-GerberMenuSubcommand `
-            -CommandName 'pipelines tags' `
+            -CommandName 'ado pipelines tags' `
             -Command $Command `
             -SubcommandTable (Get-GerberPipelinesTagsCommandCatalog) `
             -AutoSelectFirstSuggestionOnSubmit

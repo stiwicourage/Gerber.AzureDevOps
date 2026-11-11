@@ -12,15 +12,15 @@ not an added `/ado` command or a restored hello route.
 
 | Path | Purpose |
 | --- | --- |
-| `/list ado-agents` | List BUILD and DEPLOY agents. |
-| `/list ado-team-members` | List teams and their members. |
-| `/repository create` | Create and configure a repository from a template. |
-| `/branch find` | Search repositories for a branch. |
-| `/branch set-searchable` | Standardize searchable-branch policies. |
-| `/branch set-default` | Standardize default branches. |
-| `/pipelines tags` | Open the tag submenu. |
-| `/pipelines tags delete` | Delete a tag from selected tagged runs. |
-| `/pipelines tags update` | Replace a tag on selected tagged runs. |
+| `/ado list agents` | List BUILD and DEPLOY agents. |
+| `/ado list team-members` | List teams and their members. |
+| `/ado repository create` | Create and configure a repository from a template. |
+| `/ado branch find` | Search repositories for a branch. |
+| `/ado branch set-searchable` | Standardize searchable-branch policies. |
+| `/ado branch set-default` | Standardize default branches. |
+| `/ado pipelines tags` | Open the tag submenu. |
+| `/ado pipelines tags delete` | Delete a tag from selected tagged runs. |
+| `/ado pipelines tags update` | Replace a tag on selected tagged runs. |
 
 See [command reference](docs/commands.md) for prompts, previews and cancellation.
 Native REST, reports, repository provisioning, policies, work items,

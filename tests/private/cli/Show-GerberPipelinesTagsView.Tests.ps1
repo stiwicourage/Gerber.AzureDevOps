@@ -4,7 +4,7 @@ BeforeAll {
 }
 
 Describe 'Show-GerberPipelinesTagsView' {
-    It 'returns when Escape is pressed at the pipelines tags prompt' {
+    It 'returns when Escape is pressed at the ado pipelines tags prompt' {
         Mock Get-GerberMenuSubcommand { throw (Get-GerberMenuEscapeException) }
         Mock Invoke-GerberPipelineTagDelete {}
         Mock Invoke-GerberPipelineTagUpdate {}
@@ -53,6 +53,6 @@ Describe 'Show-GerberPipelinesTagsView' {
         Mock Get-GerberMenuSubcommand { 'unknown' }
 
         { Show-GerberPipelinesTagsView -Command ([pscustomobject]@{ Arguments = @() }) } |
-            Should -Throw -ExceptionType ([System.ArgumentException]) -ExpectedMessage "Unknown pipelines tags subcommand 'unknown'. Use /pipelines tags update or /pipelines tags delete."
+            Should -Throw -ExceptionType ([System.ArgumentException]) -ExpectedMessage "Unknown pipelines tags subcommand 'unknown'. Use /ado pipelines tags update or /ado pipelines tags delete."
     }
 }

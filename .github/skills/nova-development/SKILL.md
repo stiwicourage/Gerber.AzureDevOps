@@ -21,7 +21,7 @@ authorization. Use this workflow for build/test/publication validation.
 4. If local installation is authorized, run in a separate process:
    `Publish-NovaModule -Local -ModuleDirectoryPath '/path/to/test-owned/modules'`.
    Keep Gerber configuration isolated, expose the module root to a fresh host,
-   restart Gerber, invoke `/list ado-agents` only with an isolated REST fixture,
+   restart Gerber, invoke `/ado list agents` only with an isolated REST fixture,
    and inspect `/plugins list`.
    The GUID must match; known metadata alone must never imply loaded/installed.
 5. For version/package/release requests only, inspect `Update-NovaModuleVersion`,

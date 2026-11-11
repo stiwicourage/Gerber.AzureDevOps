@@ -4,7 +4,7 @@ function Invoke-GerberPipelineTagDelete {
 
     Invoke-GerberPipelineTagMutation -Operation ([pscustomobject]@{
             Mode         = 'delete'
-            CommandLabel = '/pipelines tags delete'
+            CommandLabel = '/ado pipelines tags delete'
             TracePrefix  = 'pipelines-tags-delete'
         })
 }

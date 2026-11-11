@@ -52,7 +52,7 @@ Describe 'Invoke-GerberPipelineTagMutationCurrentTagFlow' {
     It 'returns the apply-result routing after a successful apply' {
         $testContext = Get-GerberPipelineTagMutationTestContext
         Mock Get-GerberPipelineTagMutationPlanInputOrNull { [pscustomobject]@{ NewTag = 'new' } }
-        Mock Get-GerberPipelineTagMutationPlanOrNull { [pscustomobject]@{ CommandLabel = '/pipelines tags update'; TracePrefix = 'pipelines-tags-update'; CurrentTag = 'old'; NewTag = 'new'; BuildList = @([pscustomobject]@{}) } }
+        Mock Get-GerberPipelineTagMutationPlanOrNull { [pscustomobject]@{ CommandLabel = '/ado pipelines tags update'; TracePrefix = 'pipelines-tags-update'; CurrentTag = 'old'; NewTag = 'new'; BuildList = @([pscustomobject]@{}) } }
         Mock Invoke-GerberPipelineTagMutationPlanFlow { [pscustomobject]@{ ReturnToParent = $true } }
 
         $result = Invoke-GerberPipelineTagMutationCurrentTagFlow `
@@ -126,7 +126,7 @@ Describe 'Invoke-GerberPipelineTagMutationPlanFlow' {
 
         $result = Invoke-GerberPipelineTagMutationPlanFlow `
             -Context ([pscustomobject]@{ Configuration = 'cfg'; Pat = 'pat' }) `
-            -Plan ([pscustomobject]@{ CommandLabel = '/pipelines tags update'; TracePrefix = 'pipelines-tags-update'; CurrentTag = 'old'; NewTag = 'new' })
+            -Plan ([pscustomobject]@{ CommandLabel = '/ado pipelines tags update'; TracePrefix = 'pipelines-tags-update'; CurrentTag = 'old'; NewTag = 'new' })
 
         $result.ReturnToParent | Should -BeTrue
     }
@@ -237,7 +237,7 @@ Describe 'Read-GerberPipelineTagMutationSelectionOrNull' {
     It 'returns null when Escape is pressed in the checkbox chooser' {
         Mock Read-GerberCheckboxMenuPrompt { throw (Get-GerberMenuEscapeException) }
 
-        $result = Read-GerberPipelineTagMutationSelectionOrNull -Plan ([pscustomobject]@{ CommandLabel = '/pipelines tags update'; BuildList = @() })
+        $result = Read-GerberPipelineTagMutationSelectionOrNull -Plan ([pscustomobject]@{ CommandLabel = '/ado pipelines tags update'; BuildList = @() })
 
         $result | Should -BeNullOrEmpty
     }
@@ -386,7 +386,7 @@ Describe 'Confirm-GerberPipelineTagMutationApply' {
         Mock Read-GerberConfirmationPrompt { throw (Get-GerberMenuEscapeException) }
 
         $result = Confirm-GerberPipelineTagMutationApply `
-            -Plan ([pscustomobject]@{ Mode = 'update'; CommandLabel = '/pipelines tags update'; CurrentTag = 'old'; NewTag = 'new' }) `
+            -Plan ([pscustomobject]@{ Mode = 'update'; CommandLabel = '/ado pipelines tags update'; CurrentTag = 'old'; NewTag = 'new' }) `
             -Selection ([pscustomobject]@{ SelectedBuildList = @(); ExcludedBuildList = @() })
 
         $result | Should -BeFalse

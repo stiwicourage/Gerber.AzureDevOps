@@ -52,8 +52,8 @@ function Show-GerberRepositoryCreateFromTemplateHeader {
     param()
     $null = $PSCmdlet.ShouldProcess('Show-GerberRepositoryCreateFromTemplateHeader', 'Invoke')
 
-    Start-GerberScreen -Name '/repository create'
-    Write-GerberScreenLine -Text '/repository create'
+    Start-GerberScreen -Name '/ado repository create'
+    Write-GerberScreenLine -Text '/ado repository create'
     Write-GerberScreenLine
 }
 
@@ -135,8 +135,8 @@ function Show-GerberRepositoryCreatePreview {
     )
     $null = $PSCmdlet.ShouldProcess('Show-GerberRepositoryCreatePreview', 'Invoke')
 
-    Start-GerberScreen -Name '/repository create'
-    Write-GerberScreenLine -Text '/repository create'
+    Start-GerberScreen -Name '/ado repository create'
+    Write-GerberScreenLine -Text '/ado repository create'
     Write-GerberScreenLine
     Write-GerberScreenLine -Text "Repository: $($Context.RepositoryName)"
     Write-GerberScreenLine -Text "Template:   $($Context.Template.Name)"
@@ -169,8 +169,8 @@ function Show-GerberRepositoryCreateApplyScreen {
     param()
     $null = $PSCmdlet.ShouldProcess('Show-GerberRepositoryCreateApplyScreen', 'Invoke')
 
-    Start-GerberScreen -Name '/repository create'
-    Write-GerberScreenLine -Text '/repository create'
+    Start-GerberScreen -Name '/ado repository create'
+    Write-GerberScreenLine -Text '/ado repository create'
     Write-GerberScreenLine
 }
 
@@ -489,8 +489,8 @@ function Show-GerberRepositoryCreateApplyResult {
     )
     $null = $PSCmdlet.ShouldProcess('Show-GerberRepositoryCreateApplyResult', 'Invoke')
 
-    Start-GerberScreen -Name '/repository create'
-    Write-GerberScreenLine -Text '/repository create'
+    Start-GerberScreen -Name '/ado repository create'
+    Write-GerberScreenLine -Text '/ado repository create'
     Write-GerberScreenLine
     if ($Results.Failures.Count -eq 0) {
         Write-GerberScreenLine -Text 'Repository created successfully.'

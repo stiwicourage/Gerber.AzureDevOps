@@ -121,12 +121,12 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
             return $response
         }
 
-        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/list ado-agents'
+        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado list agents'
 
         $result.ConnectionProfile.ProfileName | Should -Be 'example'
         $script:userConfiguration.ado.profiles.example.projectUrl | Should -Be 'https://dev.azure.com/example-org/SampleProject'
         Should -Invoke Show-GerberTextBlock -Times 1 -ParameterFilter {
-            $Title -eq '/list ado-agents' -and
+            $Title -eq '/ado list agents' -and
             $Text -like '*Provide a full Azure DevOps project URL*'
         }
     }
@@ -161,7 +161,7 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
             return $response
         }
 
-        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/list ado-agents'
+        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado list agents'
 
         $result.ConnectionProfile.ProfileName | Should -Be 'example'
         $script:savedConfiguration | Should -BeNullOrEmpty
@@ -190,7 +190,7 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
             return $response
         }
 
-        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/list ado-team-members'
+        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado list team-members'
 
         $result.ConnectionProfile.ProfileName | Should -Be 'atlas'
         $script:userConfiguration.ado.defaultProfile | Should -Be 'atlas'
@@ -229,7 +229,7 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
         Mock Read-GerberCommand { throw 'Must not prompt.' }
         Mock Read-GerberSecureValue { throw 'Must not read a PAT.' }
 
-        { Resolve-GerberAdoConnectionReadiness -RequireAuthentication -CommandLabel '/list ado-agents' } |
+        { Resolve-GerberAdoConnectionReadiness -RequireAuthentication -CommandLabel '/ado list agents' } |
             Should -Throw '*no stored PAT*'
         Should -Invoke Read-GerberCommand -Times 0
         Should -Invoke Read-GerberSecureValue -Times 0

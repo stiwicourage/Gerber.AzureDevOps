@@ -5,8 +5,8 @@ function Show-GerberAdoAgentReport {
     $report = Get-GerberAdoAgentReport
     $styleTable = Get-GerberAdoVersionStyleTable -VersionList $report.VersionList
 
-    Start-GerberScreen -Name '/list ado-agents'
-    Write-GerberScreenLine -Text '/list ado-agents'
+    Start-GerberScreen -Name '/ado list agents'
+    Write-GerberScreenLine -Text '/ado list agents'
     Write-GerberScreenLine
     foreach ($section in @($report.Sections)) {
         Write-GerberAdoAgentSection -Section $section -StyleTable $styleTable
@@ -88,7 +88,7 @@ function Get-GerberAdoAgentHeaderLine {
     [CmdletBinding()]
     param()
 
-    return '{0,-35}{1,-14}{2,-10}{3}' -f 'Agent Name', 'Version', 'Status', 'Pool'
+    return '{0,-35}{1,-14}{2,-10}{3,-10}{4}' -f 'Agent Name', 'Version', 'Status', 'OS', 'Pool'
 }
 
 function Write-GerberAdoAgentRow {
@@ -112,6 +112,7 @@ function Write-GerberAdoAgentRow {
     Write-GerberAdoStyledText -Text (Get-GerberAdoPaddedText -Text $Agent.Name -Width 35) -Style $defaultStyle
     Write-GerberAdoStyledText -Text (Get-GerberAdoPaddedText -Text $version -Width 14) -Style $StyleTable[$Agent.Version]
     Write-GerberAdoStyledText -Text (Get-GerberAdoPaddedText -Text $status -Width 10) -Style $statusStyle
+    Write-GerberAdoStyledText -Text (Get-GerberAdoPaddedText -Text (Get-GerberAdoOperatingSystemDisplayText -OperatingSystem $Agent.OperatingSystem -Width 10) -Width 10) -Style $defaultStyle
     Write-GerberAdoStyledText -Text $PoolName -Style $defaultStyle
     $Host.UI.WriteLine()
 }
@@ -197,6 +198,25 @@ function Get-GerberAdoStatusDisplayText {
     }
 
     return 'Offline'
+}
+
+function Get-GerberAdoOperatingSystemDisplayText {
+    [OutputType([string])]
+    [CmdletBinding()]
+    param(
+        [AllowNull()]
+        [AllowEmptyString()]
+        [string]$OperatingSystem,
+
+        [Parameter(Mandatory)]
+        [int]$Width
+    )
+
+    if ($OperatingSystem.Length -lt $Width) {
+        return $OperatingSystem
+    }
+
+    return $OperatingSystem.Substring(0, $Width - 4) + '...'
 }
 
 function Get-GerberAdoPaddedText {

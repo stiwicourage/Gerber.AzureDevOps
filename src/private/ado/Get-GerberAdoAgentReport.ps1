@@ -123,6 +123,7 @@ function Get-GerberAdoPoolAgentList {
                 Name = [string]$agent.name
                 Version = Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'version'
                 Status = Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'status'
+                OperatingSystem = Get-GerberAdoAgentOperatingSystemName -Description (Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'osDescription')
             }
         }
     })
@@ -191,7 +192,10 @@ function Get-GerberAdoAgentPropertyText {
         [string]$PropertyName
     )
 
-    $value = [string]$Agent.$PropertyName
+    $property = $Agent.PSObject.Properties[$PropertyName]
+    $value = if ($property) { [string]$property.Value }
+    elseif ($Agent -is [System.Collections.IDictionary]) { [string]$Agent[$PropertyName] }
+    else { '' }
     if ([string]::IsNullOrWhiteSpace($value)) {
         return 'unknown'
     }
