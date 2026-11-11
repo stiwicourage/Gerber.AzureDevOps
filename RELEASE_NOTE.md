@@ -4,6 +4,12 @@
 
 ### Added
 
+### Changed
+
+## [0.2.3] - 2026-11-11
+
+### Added
+
 - Agent list shows the operating system of each agent.
 
 ### Changed
