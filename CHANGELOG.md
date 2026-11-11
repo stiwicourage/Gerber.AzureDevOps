@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.3.0] - 2026-11-11
+
+### Added
+
 - `/ado list agents` now shows the operating system of each agent (`Windows`, `Linux`,
   `macOS`, the raw description when unrecognized, or `unknown`).
 
@@ -16,14 +30,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   `list ado-agents` -> `ado list agents`, `list ado-team-members` -> `ado list team-members`,
   `repository create` -> `ado repository create`, `branch find|set-searchable|set-default` ->
   `ado branch ...`, `pipelines tags [delete|update]` -> `ado pipelines tags [delete|update]`.
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.2.3] - 2026-11-11
 
