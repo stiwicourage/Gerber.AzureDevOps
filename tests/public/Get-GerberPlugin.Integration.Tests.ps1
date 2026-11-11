@@ -65,7 +65,7 @@ Describe 'Get-GerberPlugin public API registration integration' {
         $definition.Guid | Should -Be $module.Guid.ToString('D')
         $definition.Namespace | Should -BeExactly 'ado'
         $script:configurationReads | Should -Be 0
-        $handler = ($definition.Commands | Where-Object Name -EQ 'list ado-agents').Handler
+        $handler = ($definition.Commands | Where-Object Name -EQ 'ado list agents').Handler
         @(& $handler ([pscustomobject]@{ Arguments = @() })) | Should -Be @($false)
         $script:configurationReads | Should -BeGreaterThan 0
         $script:secretPaths.Count | Should -BeGreaterThan 0

@@ -40,8 +40,8 @@ function Show-GerberBranchSetDefaultHeader {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/branch set-default'
-    Write-GerberScreenLine -Text '/branch set-default'
+    Start-GerberScreen -Name '/ado branch set-default'
+    Write-GerberScreenLine -Text '/ado branch set-default'
     Write-GerberScreenLine
 }
 
@@ -49,8 +49,8 @@ function Show-GerberBranchSetDefaultApplyScreen {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/branch set-default'
-    Write-GerberScreenLine -Text '/branch set-default'
+    Start-GerberScreen -Name '/ado branch set-default'
+    Write-GerberScreenLine -Text '/ado branch set-default'
     Write-GerberScreenLine
 }
 
@@ -94,8 +94,8 @@ function Show-GerberSetDefaultNoOpResult {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/branch set-default'
-    Write-GerberScreenLine -Text '/branch set-default'
+    Start-GerberScreen -Name '/ado branch set-default'
+    Write-GerberScreenLine -Text '/ado branch set-default'
     Write-GerberScreenLine
     if ($Report.NotFoundList.Count -eq 0) {
         Write-GerberScreenLine -Text "All $($Report.AlreadyAlignedList.Count) repositories are already on target."
@@ -114,8 +114,8 @@ function Show-GerberSetDefaultPreview {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/branch set-default'
-    Write-GerberScreenLine -Text '/branch set-default'
+    Start-GerberScreen -Name '/ado branch set-default'
+    Write-GerberScreenLine -Text '/ado branch set-default'
     Write-GerberScreenLine
     Write-GerberSearchableBranchPreviewGroup -Label "To update ($($Report.ToUpdateList.Count))" -Items $Report.ToUpdateList
     Write-GerberSearchableBranchPreviewGroup -Label "Already on target ($($Report.AlreadyAlignedList.Count))" -Items $Report.AlreadyAlignedList
@@ -178,8 +178,8 @@ function Show-GerberSetDefaultApplyResult {
         [pscustomobject]$Results
     )
 
-    Start-GerberScreen -Name '/branch set-default'
-    Write-GerberScreenLine -Text '/branch set-default'
+    Start-GerberScreen -Name '/ado branch set-default'
+    Write-GerberScreenLine -Text '/ado branch set-default'
     Write-GerberScreenLine
     $updated = @($Results.Results | Where-Object { $_.Success })
     $failed  = @($Results.Results | Where-Object { -not $_.Success })

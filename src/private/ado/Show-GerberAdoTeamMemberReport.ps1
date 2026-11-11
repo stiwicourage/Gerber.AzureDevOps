@@ -2,8 +2,8 @@
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/list ado-team-members'
-    Write-GerberScreenLine -Text '/list ado-team-members'
+    Start-GerberScreen -Name '/ado list team-members'
+    Write-GerberScreenLine -Text '/ado list team-members'
     Write-GerberScreenLine
     Write-GerberScreenLine -Text 'Connecting to Azure DevOps...'
     $report = Get-GerberAdoTeamMemberReport
@@ -19,8 +19,8 @@ function Show-GerberAdoTeamMemberSummaryScreen {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/list ado-team-members'
-    Write-GerberScreenLine -Text '/list ado-team-members'
+    Start-GerberScreen -Name '/ado list team-members'
+    Write-GerberScreenLine -Text '/ado list team-members'
     Write-GerberScreenLine
     Show-GerberAdoTeamMemberSummary -Report $Report
     Write-GerberScreenLine
@@ -129,8 +129,8 @@ function Read-GerberAdoProjectMenuChoice {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/list ado-team-members'
-    Write-GerberScreenLine -Text '/list ado-team-members'
+    Start-GerberScreen -Name '/ado list team-members'
+    Write-GerberScreenLine -Text '/ado list team-members'
     Write-GerberScreenLine
     Show-GerberAdoTeamMemberSummary -Report $Report
     Write-GerberScreenLine
@@ -151,8 +151,8 @@ function Read-GerberAdoTeamMenuChoice {
         [pscustomobject]$Project
     )
 
-    Start-GerberScreen -Name '/list ado-team-members'
-    Write-GerberScreenLine -Text '/list ado-team-members'
+    Start-GerberScreen -Name '/ado list team-members'
+    Write-GerberScreenLine -Text '/ado list team-members'
     Write-GerberScreenLine
     Write-GerberAdoColorLine -Text $Project.Name -ForegroundColor Cyan
     if (@($Project.TeamList).Count -eq 0) {
@@ -190,8 +190,8 @@ function Show-GerberAdoMemberListScreen {
             [pscustomobject]$SelectedTeam
         )
 
-        Start-GerberScreen -Name '/list ado-team-members'
-        Write-GerberScreenLine -Text '/list ado-team-members'
+        Start-GerberScreen -Name '/ado list team-members'
+        Write-GerberScreenLine -Text '/ado list team-members'
         Write-GerberScreenLine
         Write-GerberAdoColorLine -Text "$($SelectedProject.Name) › $($SelectedTeam.Name)" -ForegroundColor Cyan
         Write-GerberScreenLine

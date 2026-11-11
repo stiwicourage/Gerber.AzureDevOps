@@ -157,7 +157,7 @@ Describe 'Show-GerberSetDefaultPreview' {
         Should -Invoke Write-GerberSearchableBranchPreviewGroup -Times 1 -ParameterFilter { $Label -like 'Branch not found*' }
     }
 
-    It 'shows the /branch set-default header line' {
+    It 'shows the /ado branch set-default header line' {
         Mock Clear-Host {}
         Mock Write-GerberScreenLine {}
         Mock Write-GerberSearchableBranchPreviewGroup {}
@@ -166,7 +166,7 @@ Describe 'Show-GerberSetDefaultPreview' {
             ToUpdateList = @(); AlreadyAlignedList = @(); NotFoundList = @()
         })
 
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/branch set-default' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado branch set-default' }
     }
 }
 
@@ -420,8 +420,8 @@ Describe '<Command>' -ForEach @(
 
         & $Command
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-default' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/branch set-default' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-default' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado branch set-default' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }
@@ -442,7 +442,7 @@ Describe 'Show-GerberSetDefaultApplyResult' {
 
         Show-GerberSetDefaultApplyResult -Results $results
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/branch set-default' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado branch set-default' }
         Should -Invoke Write-GerberSetDefaultResultSummary -Times 1 -ParameterFilter {
             $Updated.Count -eq 1 -and $Failed.Count -eq 1 -and
             $Unchanged -eq 2 -and $NotFound -eq 1

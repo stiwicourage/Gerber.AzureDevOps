@@ -736,8 +736,8 @@ Describe 'Repository-create route header screens' {
 
         & $FunctionName
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/repository create' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/repository create' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado repository create' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado repository create' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }
@@ -750,7 +750,7 @@ Describe 'Show-GerberRepositoryCreateApplyResult' {
         Show-GerberRepositoryCreateApplyResult -Results ([pscustomobject]@{ Failures = @() })
 
         Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq 'Repository created successfully.' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/repository create' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado repository create' }
     }
 
     It 'writes a failure summary and each failure detail when failures exist' {

@@ -54,7 +54,7 @@ Describe 'Required dependency import versus plugin activation' {
             Clear-GerberCommandRegistry
             $null = Initialize-GerberCommandRegistry -PluginModulePathList @($PluginDist)
             [pscustomobject]@{
-                Resolution = Resolve-GerberCommand -InputText '/repository create'
+                Resolution = Resolve-GerberCommand -InputText '/ado repository create'
                 Inventory = @(Get-GerberPluginInventory -PluginModulePathList @($PluginDist))
                 ProductCommands = @(Get-GerberCommandRegistry | Where-Object OwnerName -EQ 'Gerber.AzureDevOps')
             }

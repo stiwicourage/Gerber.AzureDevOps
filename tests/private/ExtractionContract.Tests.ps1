@@ -11,15 +11,15 @@ Describe 'Azure DevOps extraction command ownership' {
         }
         $definitions = @(Get-PluginCommandDefinitionList -Gerber $api)
         $definitions.Name | Should -Be @(
-            'list ado-agents'
-            'list ado-team-members'
-            'repository create'
-            'branch find'
-            'branch set-searchable'
-            'branch set-default'
-            'pipelines tags'
-            'pipelines tags delete'
-            'pipelines tags update'
+            'ado list agents'
+            'ado list team-members'
+            'ado repository create'
+            'ado branch find'
+            'ado branch set-searchable'
+            'ado branch set-default'
+            'ado pipelines tags'
+            'ado pipelines tags delete'
+            'ado pipelines tags update'
         )
         $definitions.Name | Should -Not -Contain 'ado hello'
     }

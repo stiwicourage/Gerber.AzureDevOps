@@ -21,7 +21,7 @@ Describe 'Get-GerberPlugin' {
         $definition = Get-GerberPlugin -Gerber $api
         $definition.Guid | Should -Be 'a468dee5-c7a0-43e4-ae88-bb19158fe679'
         $definition.Commands.Count | Should -Be 9
-        $definition.Commands.Name | Should -Contain 'list ado-agents'
+        $definition.Commands.Name | Should -Contain 'ado list agents'
         $definition.Commands.Name | Should -Not -Contain 'ado hello'
     }
 }

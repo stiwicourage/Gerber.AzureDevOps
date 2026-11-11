@@ -44,8 +44,8 @@ function Show-GerberBranchSetSearchableHeader {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/branch set-searchable'
-    Write-GerberScreenLine -Text '/branch set-searchable'
+    Start-GerberScreen -Name '/ado branch set-searchable'
+    Write-GerberScreenLine -Text '/ado branch set-searchable'
     Write-GerberScreenLine
 }
 
@@ -53,8 +53,8 @@ function Show-GerberSearchableBranchApplyScreen {
     [CmdletBinding()]
     param()
 
-    Start-GerberScreen -Name '/branch set-searchable'
-    Write-GerberScreenLine -Text '/branch set-searchable'
+    Start-GerberScreen -Name '/ado branch set-searchable'
+    Write-GerberScreenLine -Text '/ado branch set-searchable'
     Write-GerberScreenLine
 }
 
@@ -155,8 +155,8 @@ function Show-GerberSearchableBranchNoOpResult {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/branch set-searchable'
-    Write-GerberScreenLine -Text '/branch set-searchable'
+    Start-GerberScreen -Name '/ado branch set-searchable'
+    Write-GerberScreenLine -Text '/ado branch set-searchable'
     Write-GerberScreenLine
     Write-GerberScreenLine -Text "All $($Report.AlreadyAlignedList.Count) repositories are already aligned."
 }
@@ -168,8 +168,8 @@ function Show-GerberSearchableBranchPreview {
         [pscustomobject]$Report
     )
 
-    Start-GerberScreen -Name '/branch set-searchable'
-    Write-GerberScreenLine -Text '/branch set-searchable'
+    Start-GerberScreen -Name '/ado branch set-searchable'
+    Write-GerberScreenLine -Text '/ado branch set-searchable'
     Write-GerberScreenLine
     Write-GerberSearchableBranchPreviewGroup -Label "To create ($($Report.CreateList.Count))" -Items $Report.CreateList
     Write-GerberSearchableBranchPreviewGroup -Label "To update ($($Report.UpdateList.Count))" -Items $Report.UpdateList
@@ -252,8 +252,8 @@ function Show-GerberSearchableBranchApplyResult {
         [pscustomobject]$Results
     )
 
-    Start-GerberScreen -Name '/branch set-searchable'
-    Write-GerberScreenLine -Text '/branch set-searchable'
+    Start-GerberScreen -Name '/ado branch set-searchable'
+    Write-GerberScreenLine -Text '/ado branch set-searchable'
     Write-GerberScreenLine
     $created = @($Results.Results | Where-Object { $_.Success -and $_.IsCreate })
     $updated = @($Results.Results | Where-Object { $_.Success -and -not $_.IsCreate })

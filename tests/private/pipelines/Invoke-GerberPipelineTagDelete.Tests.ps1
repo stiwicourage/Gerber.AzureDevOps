@@ -11,7 +11,7 @@ Describe 'Invoke-GerberPipelineTagDelete' {
 
         Should -Invoke Invoke-GerberPipelineTagMutation -Times 1 -ParameterFilter {
             $Operation.Mode -eq 'delete' -and
-            $Operation.CommandLabel -eq '/pipelines tags delete' -and
+            $Operation.CommandLabel -eq '/ado pipelines tags delete' -and
             $Operation.TracePrefix -eq 'pipelines-tags-delete'
         }
     }

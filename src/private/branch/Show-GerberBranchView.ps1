@@ -26,7 +26,7 @@ function Show-GerberBranchView {
                 continue
             }
             default {
-                throw [System.ArgumentException]::new("Unknown branch subcommand '$subcommand'. Use /branch find, /branch set-searchable, or /branch set-default.")
+                throw [System.ArgumentException]::new("Unknown branch subcommand '$subcommand'. Use /ado branch find, /ado branch set-searchable, or /ado branch set-default.")
             }
         }
     }

@@ -193,14 +193,14 @@ Describe 'Read-GerberRepositoryCreateProjectOrNull' {
 }
 
 Describe 'Show-GerberRepositoryCreateHeader' {
-    It 'clears the host and writes the repository create route header' {
+    It 'clears the host and writes the ado repository create route header' {
         Mock Start-GerberScreen {}
         Mock Write-GerberScreenLine {}
 
         Show-GerberRepositoryCreateHeader
 
-        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/repository create' }
-        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/repository create' }
+        Should -Invoke Start-GerberScreen -Times 1 -ParameterFilter { $Name -eq '/ado repository create' }
+        Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado repository create' }
         Should -Invoke Write-GerberScreenLine -Times 2
     }
 }

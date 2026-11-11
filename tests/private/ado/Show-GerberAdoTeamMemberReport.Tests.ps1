@@ -87,7 +87,7 @@ Describe 'Show-GerberAdoTeamMemberReport' {
         Show-GerberAdoTeamMemberReport
 
         Should -Invoke Write-GerberScreenLine -ParameterFilter { $Text -eq 'Connecting to Azure DevOps...' }
-        Should -Invoke Start-GerberScreen -Times 2 -ParameterFilter { $Name -eq '/list ado-team-members' }
+        Should -Invoke Start-GerberScreen -Times 2 -ParameterFilter { $Name -eq '/ado list team-members' }
         Should -Invoke Write-GerberAdoColorLine -ParameterFilter { $Text -eq 'No projects found.' }
     }
 

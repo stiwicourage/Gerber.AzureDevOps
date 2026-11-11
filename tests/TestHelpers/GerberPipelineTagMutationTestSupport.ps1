@@ -7,7 +7,7 @@ function Get-GerberPipelineTagMutationTestContext {
 
     $operation = [pscustomobject]@{
         Mode         = $Mode
-        CommandLabel = "/pipelines tags $Mode"
+        CommandLabel = "/ado pipelines tags $Mode"
         TracePrefix  = "pipelines-tags-$Mode"
     }
 
@@ -53,7 +53,7 @@ function Get-GerberPipelineTagMutationApplyResult {
 
     $plan = [pscustomobject]@{
         Mode         = $Mode
-        CommandLabel = "/pipelines tags $Mode"
+        CommandLabel = "/ado pipelines tags $Mode"
         TracePrefix  = "pipelines-tags-$Mode"
         CurrentTag   = 'old'
         NewTag       = $(if ($Mode -eq 'update') { 'new' } else { $null })

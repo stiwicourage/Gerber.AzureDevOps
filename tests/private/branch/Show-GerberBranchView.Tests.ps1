@@ -4,7 +4,7 @@ BeforeAll {
 }
 
 Describe 'Show-GerberBranchView' {
-    It 'opens /branch find when find is selected and loops back to chooser' {
+    It 'opens /ado branch find when find is selected and loops back to chooser' {
         $script:branchViewCall = 0
         Mock Get-GerberMenuSubcommand { @('find', '')[$script:branchViewCall++] }
         Mock Invoke-GerberBranchFindFlow {}
@@ -53,7 +53,7 @@ Describe 'Show-GerberBranchView' {
         Mock Get-GerberMenuSubcommand { 'oops' }
 
         { Show-GerberBranchView -Command ([pscustomobject]@{ Arguments = @() }) } |
-            Should -Throw "Unknown branch subcommand 'oops'. Use /branch find, /branch set-searchable, or /branch set-default."
+            Should -Throw "Unknown branch subcommand 'oops'. Use /ado branch find, /ado branch set-searchable, or /ado branch set-default."
     }
 
     It 'opens /branch <Subcommand> when selected and loops back to chooser' -ForEach @(

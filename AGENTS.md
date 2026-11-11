@@ -19,16 +19,19 @@ Keep `Manifest.GUID` `a468dee5-c7a0-43e4-ae88-bb19158fe679`, version `0.1.0`,
 `PrivateData.Gerber.ApiVersion` `1`, namespace identity `ado`, and the canonical
 PSGallery repository declaration stable unless separately authorized.
 The descriptor `Namespace` and manifest `PrivateData.Gerber.Namespace` both
-declare `ado`; that metadata must not relocate the registered command paths.
+declare `ado`; the registered command paths live under that `ado` namespace.
 
 ## Command registration and module binding
 
 `Get-PluginCommandDefinitionList` owns these exact paths without leading slashes:
-`list ado-agents`, `list ado-team-members`, `repository create`, `branch find`,
-`branch set-searchable`, `branch set-default`, `pipelines tags`,
-`pipelines tags delete`, `pipelines tags update`.
-Core owns the generic roots; this plugin owns their product leaves.
-Do not introduce an all-under-`ado` hierarchy or restore hello scaffolding.
+`ado list agents`, `ado list team-members`, `ado repository create`, `ado branch find`,
+`ado branch set-searchable`, `ado branch set-default`, `ado pipelines tags`,
+`ado pipelines tags delete`, `ado pipelines tags update`.
+All paths sit under the `ado` namespace. Core creates the missing `ado`,
+`ado list`, `ado branch`, `ado repository` and `ado pipelines` containers; this
+plugin owns the product leaves. Do not restore hello scaffolding or the former
+top-level paths (`list ado-agents`, `list ado-team-members`, `repository create`,
+`branch ...`, `pipelines tags ...`).
 
 Definitions contain `Name`, `Description`, `Handler` and `Subcommands`.
 `New-AdoModuleHandler` captures the supplied API and a plugin-module-bound

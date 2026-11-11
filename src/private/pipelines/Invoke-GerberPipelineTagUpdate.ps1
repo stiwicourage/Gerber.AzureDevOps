@@ -4,7 +4,7 @@ function Invoke-GerberPipelineTagUpdate {
 
     Invoke-GerberPipelineTagMutation -Operation ([pscustomobject]@{
             Mode        = 'update'
-            CommandLabel = '/pipelines tags update'
+            CommandLabel = '/ado pipelines tags update'
             TracePrefix = 'pipelines-tags-update'
         })
 }
