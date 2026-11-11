@@ -56,18 +56,19 @@ Describe 'Show-GerberAdoAgentReport' {
 
         Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== BUILD AGENTS (automation pools) ===' }
         Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== DEPLOY AGENTS (deployment pools) ===' }
-        Should -Invoke Write-GerberAdoColorLine -Times 2 -ParameterFilter { $Text -eq 'Agent Name                         Version       Status    OS        Pool' }
+        Should -Invoke Write-GerberAdoColorLine -Times 2 -ParameterFilter { $Text -eq 'Agent Name                         Version       Status    Pool                            OS' }
         Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'Pool: Alpha Pool' }
         Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '  (No agents in this pool)' }
         Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'No pools found for poolType=deployment' }
         Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'build-agent-01                     ' }
         Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq '3.225.0       ' }
         Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Online    ' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Linux     ' }
+        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Build Pool                      ' }
+        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Linux' }
         Should -Invoke Write-GerberAdoStyledText -Times 2 -ParameterFilter { $Text -eq '3.225.0       ' }
     }
 
-    It 'truncates a long operating system description to keep the Pool column aligned' {
+    It 'writes the full operating system description as the last column' {
         Mock Write-GerberAdoStyledText {}
         Mock Get-GerberAdoDefaultStyle { @{} }
         Mock Get-GerberAdoStatusStyle { @{} }
@@ -78,7 +79,7 @@ Describe 'Show-GerberAdoAgentReport' {
 
         Write-GerberAdoAgentRow -Agent $agent -PoolName 'Pool' -StyleTable @{ '3.225.0' = @{} }
 
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Some V... ' }
+        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Some Very Long Operating System Name' }
     }
 
     It 'assigns one style per unique version' {
