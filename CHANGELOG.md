@@ -25,6 +25,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Security
 
+## [0.2.3] - 2026-11-11
+
+### Added
+
+- `/ado list agents` now shows the operating system of each agent (`Windows`, `Linux`,
+  `macOS`, the raw description when unrecognized, or `unknown`).
+
+### Changed
+
+- **Breaking:** all commands moved under the `/ado` namespace and the old paths no longer work:
+  `list ado-agents` -> `ado list agents`, `list ado-team-members` -> `ado list team-members`,
+  `repository create` -> `ado repository create`, `branch find|set-searchable|set-default` ->
+  `ado branch ...`, `pipelines tags [delete|update]` -> `ado pipelines tags [delete|update]`.
+
 ## [0.2.2] - 2026-11-10
 
 ## [0.2.1] - 2026-11-10

@@ -4,6 +4,20 @@
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.2.3] - 2026-11-11
+
+### Added
+
 - Agent list shows the operating system of each agent.
 
 ### Changed
@@ -27,4 +41,3 @@
 ### Added
 
 - Initial release of the Azure DevOps plugin for Gerber. See `CHANGELOG.md` for details.
-
