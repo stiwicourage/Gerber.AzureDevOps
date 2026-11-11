@@ -6,6 +6,14 @@
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [0.2.3] - 2026-11-11
 
 ### Added
@@ -33,4 +41,3 @@
 ### Added
 
 - Initial release of the Azure DevOps plugin for Gerber. See `CHANGELOG.md` for details.
-
