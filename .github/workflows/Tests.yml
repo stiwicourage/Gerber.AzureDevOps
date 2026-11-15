@@ -8,6 +8,8 @@ on:
     branches:
       - main
       - develop
+  schedule:
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,6 +20,7 @@ jobs:
   tests:
     uses: stiwicourage/powershell-ci/.github/workflows/tests.yml@0.1.0
     with:
+      script-analyzer-required-version: '1.25.0'
+      changelog-files: ./CHANGELOG.md ./RELEASE_NOTE.md
       build-validation: false
-      codescene-enabled: true
     secrets: inherit
