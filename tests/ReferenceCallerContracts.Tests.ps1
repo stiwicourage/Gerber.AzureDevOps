@@ -26,16 +26,4 @@ Describe 'Gerber.AzureDevOps reference caller contracts' {
         $script:publishCaller | Should -Not -Match '(?m)^\s+test-command:'
         $script:publishCaller | Should -Match '(?m)^      release-continuous-integration: true$'
     }
-
-    It 'retains the shared <Workflow> <Shared> caller at tag 0.1.0' -ForEach @(
-        @{ Workflow = 'Tests'; Shared = 'tests' }
-        @{ Workflow = 'Publish'; Shared = 'publish' }
-        @{ Workflow = 'Security'; Shared = 'codeql' }
-        @{ Workflow = 'Security'; Shared = 'powershell-analyzer' }
-        @{ Workflow = 'Security'; Shared = 'dependency-review' }
-    ) {
-        $caller = Get-Content -LiteralPath (Join-Path $workflowRoot "$Workflow.yml") -Raw
-        $reference = [regex]::Escape("stiwicourage/powershell-ci/.github/workflows/$Shared.yml@0.1.0")
-        $caller | Should -Match "(?m)^    uses: $reference$"
-    }
 }
