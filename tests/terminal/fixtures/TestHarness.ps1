@@ -25,6 +25,8 @@ Write-GerberTerminalJsonFile -Path $DiagnosticStatePath -Value @{ events = @() }
 Write-GerberTerminalJsonFile -Path $ModuleStatePath -Value (Get-GerberTerminalDefaultModuleState)
 Initialize-GerberTerminalClipboardShim -Path $ClipboardStatePath
 Initialize-GerberTerminalHttpShim -FixturePath $HttpFixturePath -StatePath $HttpStatePath
+. (Join-Path $PSScriptRoot 'AgentRefreshHttpShim.ps1')
+Set-Item -Path Function:\global:Invoke-RestMethod -Value (Get-AdoTerminalRestMethodShim)
 Initialize-GerberPromptTracePath -Path $PromptTracePath
 
 try {

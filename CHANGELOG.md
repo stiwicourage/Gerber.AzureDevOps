@@ -7,7 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `/ado agents update`: explicit multi-pool selection for self-hosted BUILD/DEPLOY
+  pools, combined snapshot preview, Cancel-default confirmation and revalidation.
+  Requests are sequential, not retried and report partial/unknown outcomes.
+  ADO chooses the version (including possible major changes); acceptance is not installation.
+  Ctrl-C during a batch preserves accepted receipts and returns to Gerber, stopping
+  further requests after the in-flight request settles or times out.
+  The picker shows one row per pool without status/version descriptions.
+  Confirmation also shows one identity/count row per pool, never individual agents.
+  Receipts are compact; shared explanations are shown once each.
+  Refresh uses the preview messages route and explicit JSON `null`/JSON headers.
+  HTTP 400 and other rejections include a sanitized, one-line JSON server message
+  when available, truncated to 160 characters without exposing raw diagnostics.
+
 ### Changed
+
+- **Breaking:** `/ado agents list` replaces `/ado list agents` without an alias.
+  `/ado list team-members` and existing agent-report formatting are unchanged.
 
 ### Deprecated
 
@@ -68,4 +84,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Removed
 
 - Hello scaffolding and dependency on the removed Core Ado API.
-

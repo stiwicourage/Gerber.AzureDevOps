@@ -5,8 +5,8 @@ function Show-GerberAdoAgentReport {
     $report = Get-GerberAdoAgentReport
     $styleTable = Get-GerberAdoVersionStyleTable -VersionList $report.VersionList
 
-    Start-GerberScreen -Name '/ado list agents'
-    Write-GerberScreenLine -Text '/ado list agents'
+    Start-GerberScreen -Name '/ado agents list'
+    Write-GerberScreenLine -Text '/ado agents list'
     Write-GerberScreenLine
     foreach ($section in @($report.Sections)) {
         Write-GerberAdoAgentSection -Section $section -StyleTable $styleTable

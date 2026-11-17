@@ -1,71 +1,44 @@
 BeforeAll {
     . (Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) 'TestHelpers/GerberTestSupport.ps1')
+    . (Join-Path $PSScriptRoot '../../TestHelpers/GerberAgentReportRenderingTestSupport.ps1')
     Import-GerberSource -StartPath $PSScriptRoot
 }
 
 Describe 'Show-GerberAdoAgentReport' {
-    It 'renders script-style BUILD before DEPLOY and shows empty states' {
-        Mock Get-GerberAdoAgentReport {
-            [pscustomobject]@{
-                Configuration = [pscustomobject]@{
-                    CollectionUri = [uri]'https://ado.example.test/ExampleProject/'
-                    ProjectName = 'ExampleProject'
+    Context 'Script-style report rendering' {
+        BeforeEach {
+            Mock Get-GerberAdoAgentReport { Get-GerberAgentRenderingTestReport }
+            Mock Clear-Host {}
+            Mock Write-GerberScreenLine {}
+            Mock Write-GerberAdoColorLine {}
+            Mock Write-GerberAdoStyledText {}
+            Mock Get-GerberPromptColorPair {
+                [pscustomobject]@{
+                    BackgroundColor = [System.ConsoleColor]::Black
                 }
-                Sections = @(
-                    [pscustomobject]@{
-                        Name = 'BUILD'
-                        PoolType = 'automation'
-                        PoolList = @(
-                            [pscustomobject]@{
-                                Name = 'Alpha Pool'
-                                AgentList = @()
-                            }
-                            [pscustomobject]@{
-                                Name = 'Build Pool'
-                                AgentList = @(
-                                    [pscustomobject]@{
-                                        Name = 'build-agent-01'
-                                        Version = '3.225.0'
-                                        Status = 'online'
-                                        OperatingSystem = 'Linux'
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    [pscustomobject]@{
-                        Name = 'DEPLOY'
-                        PoolType = 'deployment'
-                        PoolList = @()
-                    }
-                )
-                VersionList = @('3.225.0')
-            }
-        }
-        Mock Clear-Host {}
-        Mock Write-GerberScreenLine {}
-        Mock Write-GerberAdoColorLine {}
-        Mock Write-GerberAdoStyledText {}
-        Mock Get-GerberPromptColorPair {
-            [pscustomobject]@{
-                BackgroundColor = [System.ConsoleColor]::Black
             }
         }
 
-        Show-GerberAdoAgentReport
+        It 'renders script-style BUILD before DEPLOY and shows empty states' {
+            Show-GerberAdoAgentReport
+            Should -Invoke Write-GerberScreenLine -Times 1 -ParameterFilter { $Text -eq '/ado agents list' }
+            Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== BUILD AGENTS (automation pools) ===' }
+            Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== DEPLOY AGENTS (deployment pools) ===' }
+            Should -Invoke Write-GerberAdoColorLine -Times 2 -ParameterFilter { $Text -eq 'Agent Name                         Version       Status    Pool                            OS' }
+            Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'Pool: Alpha Pool' }
+            Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '  (No agents in this pool)' }
+            Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'No pools found for poolType=deployment' }
+        }
 
-        Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== BUILD AGENTS (automation pools) ===' }
-        Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '=== DEPLOY AGENTS (deployment pools) ===' }
-        Should -Invoke Write-GerberAdoColorLine -Times 2 -ParameterFilter { $Text -eq 'Agent Name                         Version       Status    Pool                            OS' }
-        Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'Pool: Alpha Pool' }
-        Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq '  (No agents in this pool)' }
-        Should -Invoke Write-GerberAdoColorLine -Times 1 -ParameterFilter { $Text -eq 'No pools found for poolType=deployment' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'build-agent-01                     ' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq '3.225.0       ' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Online    ' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Build Pool                      ' }
-        Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Linux' }
-        Should -Invoke Write-GerberAdoStyledText -Times 2 -ParameterFilter { $Text -eq '3.225.0       ' }
+        It 'preserves fixed-width agent columns and version legend receipts' {
+            Show-GerberAdoAgentReport
+            Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'build-agent-01                     ' }
+            Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq '3.225.0       ' }
+            Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Online    ' }
+            Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Build Pool                      ' }
+            Should -Invoke Write-GerberAdoStyledText -Times 1 -ParameterFilter { $Text -eq 'Linux' }
+            Should -Invoke Write-GerberAdoStyledText -Times 2 -ParameterFilter { $Text -eq '3.225.0       ' }
+        }
     }
 
     It 'writes the full operating system description as the last column' {
