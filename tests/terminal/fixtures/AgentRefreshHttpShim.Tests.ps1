@@ -1,6 +1,16 @@
 BeforeAll {
-    . (Join-Path $PSScriptRoot '../../../../GerberCore/tests/terminal/fixtures/TestHarness.Environment.ps1')
-    . (Join-Path $PSScriptRoot 'AgentRefreshHttpShim.ps1')
+    # Test-owned stand-ins for the Gerber Core harness boundary; every test mocks them, so no sibling checkout is needed.
+    function Write-GerberTerminalHttpResponseHeader {
+        param([AllowEmptyString()][string]$VariableName, [AllowNull()][object]$MatchingEntry)
+        throw "Unmocked Core boundary call for '$VariableName' with entry '$MatchingEntry'."
+    }
+
+    function Resolve-GerberTerminalHttpFixtureResponse {
+        param([Parameter(Mandatory)][hashtable]$Fixture, [AllowNull()][object]$MatchingEntry)
+        throw "Unmocked Core boundary call for $($Fixture.Count) fixture key(s) with entry '$MatchingEntry'."
+    }
+
+    . (Join-Path -Path $PSScriptRoot -ChildPath 'AgentRefreshHttpShim.ps1')
 }
 
 Describe 'Terminal HTTP fixture adapter characterization' {
