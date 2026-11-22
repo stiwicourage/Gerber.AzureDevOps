@@ -4,7 +4,22 @@
 
 ### Added
 
+- `/ado agents update` selects multiple self-hosted BUILD/DEPLOY pools for
+  pool-wide refresh. Review the combined preview; confirmation defaults to Cancel.
+  ADO chooses the version, possibly changing major; requests run asynchronously.
+  Receipts do not prove installation. Hosted and empty pools are omitted.
+  Ctrl-C during a batch preserves accepted receipts and returns to Gerber after
+  the in-flight request settles or times out, without sending further requests.
+  Pool selection is one checkbox row per pool, without status/version sublines;
+  confirmation lists only pool identities/counts and shared warnings, not agents.
+  Refresh follows the preview messages/JSON `null` request contract. HTTP 400 and
+  other rejections show the sanitized JSON server reason when available, limited
+  to 160 characters; raw response diagnostics and credentials are not displayed.
+
 ### Changed
+
+- **Breaking:** use `/ado agents list` instead of `/ado list agents`; no alias is
+  retained. `/ado list team-members` is unchanged.
 
 ### Deprecated
 
@@ -15,6 +30,12 @@
 ### Security
 
 ## [0.3.0] - 2026-11-11
+
+### Changed
+
+- `/ado list agents` shows the operating system in the last column and no longer
+  truncates long descriptions.
+- The minor version marks the breaking `/ado` command move released in 0.2.3.
 
 ## [0.2.3] - 2026-11-11
 
@@ -36,7 +57,15 @@
 
 ## [0.2.2] - 2026-11-10
 
+### Changed
+
+- No changes for plugin users; this version republishes 0.2.1.
+
 ## [0.2.1] - 2026-11-10
+
+### Changed
+
+- No changes for plugin users; the release pipeline now uses pinned shared CI workflows.
 
 ## [0.2.0] - 2026-11-10
 
@@ -44,3 +73,9 @@
 
 - Initial release of the Azure DevOps plugin for Gerber. See `CHANGELOG.md` for details.
 
+[Unreleased]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.3...0.3.0
+[0.2.3]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/releases/tag/0.2.0

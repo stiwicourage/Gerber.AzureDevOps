@@ -1,21 +1,7 @@
 BeforeAll {
     . (Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) 'TestHelpers/GerberTestSupport.ps1')
+    . (Join-Path $PSScriptRoot '../../TestHelpers/GerberConnectionReadinessTestSupport.ps1')
     Import-GerberSource -StartPath $PSScriptRoot
-
-    function ConvertTo-TestGerberSecureValue {
-        param(
-            [Parameter(Mandatory)]
-            [string]$Text
-        )
-
-        $secureValue = [System.Security.SecureString]::new()
-        foreach ($character in $Text.ToCharArray()) {
-            $secureValue.AppendChar($character)
-        }
-
-        $secureValue.MakeReadOnly()
-        return $secureValue
-    }
 }
 
 Describe 'Resolve-GerberAdoConnectionReadiness' {
@@ -107,26 +93,16 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
     }
 
     It 're-prompts after an invalid project URL without restarting the operation' {
-        $script:commandResponses = @(
-            ''
-            'not-a-url'
-            'https://dev.azure.com/example-org/SampleProject'
-            'example'
-            'n'
-        )
+        $script:commandResponses = Get-GerberReadinessRetryTestInput
         $script:commandIndex = 0
-        Mock Read-GerberCommand {
-            $response = $script:commandResponses[$script:commandIndex]
-            $script:commandIndex++
-            return $response
-        }
+        Mock Read-GerberCommand { Read-GerberReadinessTestResponse }
 
-        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado list agents'
+        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado agents list'
 
         $result.ConnectionProfile.ProfileName | Should -Be 'example'
         $script:userConfiguration.ado.profiles.example.projectUrl | Should -Be 'https://dev.azure.com/example-org/SampleProject'
         Should -Invoke Show-GerberTextBlock -Times 1 -ParameterFilter {
-            $Title -eq '/ado list agents' -and
+            $Title -eq '/ado agents list' -and
             $Text -like '*Provide a full Azure DevOps project URL*'
         }
     }
@@ -143,25 +119,12 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
     }
 
     It 'uses the only available profile when no default exists and does not write configuration when default is declined' {
-        $script:userConfiguration = @{
-            schemaVersion = 1
-            ado = @{
-                profiles = [ordered]@{
-                    example = @{
-                        projectUrl = 'https://dev.azure.com/example-org/SampleProject'
-                    }
-                }
-            }
-        }
+        $script:userConfiguration = Get-GerberReadinessSingleProfileTestConfiguration
         $script:commandResponses = @('', 'n')
         $script:commandIndex = 0
-        Mock Read-GerberCommand {
-            $response = $script:commandResponses[$script:commandIndex]
-            $script:commandIndex++
-            return $response
-        }
+        Mock Read-GerberCommand { Read-GerberReadinessTestResponse }
 
-        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado list agents'
+        $result = Resolve-GerberAdoConnectionReadiness -CommandLabel '/ado agents list'
 
         $result.ConnectionProfile.ProfileName | Should -Be 'example'
         $script:savedConfiguration | Should -BeNullOrEmpty
@@ -220,16 +183,12 @@ Describe 'Resolve-GerberAdoConnectionReadiness' {
     }
 
     It 'fails for a missing PAT noninteractively without any setup prompt or mutation' {
-        $script:userConfiguration = @{
-            ado = @{ defaultProfile = 'example'; profiles = @{
-                example = @{ projectUrl = 'https://dev.azure.com/example-org/SampleProject' }
-            } }
-        }
+        $script:userConfiguration = Get-GerberReadinessMissingPatTestConfiguration
         Mock Test-GerberConsoleInputRedirected { $true }
         Mock Read-GerberCommand { throw 'Must not prompt.' }
         Mock Read-GerberSecureValue { throw 'Must not read a PAT.' }
 
-        { Resolve-GerberAdoConnectionReadiness -RequireAuthentication -CommandLabel '/ado list agents' } |
+        { Resolve-GerberAdoConnectionReadiness -RequireAuthentication -CommandLabel '/ado agents list' } |
             Should -Throw '*no stored PAT*'
         Should -Invoke Read-GerberCommand -Times 0
         Should -Invoke Read-GerberSecureValue -Times 0

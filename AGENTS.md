@@ -24,12 +24,12 @@ declare `ado`; the registered command paths live under that `ado` namespace.
 ## Command registration and module binding
 
 `Get-PluginCommandDefinitionList` owns these exact paths without leading slashes:
-`ado list agents`, `ado list team-members`, `ado repository create`, `ado branch find`,
+`ado agents list`, `ado agents update`, `ado list team-members`, `ado repository create`, `ado branch find`,
 `ado branch set-searchable`, `ado branch set-default`, `ado pipelines tags`,
 `ado pipelines tags delete`, `ado pipelines tags update`.
 All paths sit under the `ado` namespace. Core creates the missing `ado`,
-`ado list`, `ado branch`, `ado repository` and `ado pipelines` containers; this
-plugin owns the product leaves. Do not restore hello scaffolding or the former
+`ado agents`, `ado list`, `ado branch`, `ado repository` and `ado pipelines` containers; this
+plugin owns the ten product leaves. Do not restore `ado list agents`, hello scaffolding or the former
 top-level paths (`list ado-agents`, `list ado-team-members`, `repository create`,
 `branch ...`, `pipelines tags ...`).
 

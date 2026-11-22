@@ -1,6 +1,7 @@
 # Routing spans built Core registry/resolver and the built product module.
 # No private Core source is loaded; the module-session probe is test-owned.
 BeforeAll {
+    . (Join-Path $PSScriptRoot 'TestHelpers/GerberCommandResolutionTestSupport.ps1')
     $root = Split-Path -Parent $PSScriptRoot
     $coreDist = Join-Path $root '../GerberCore/dist'
     $originalModulePath = $env:PSModulePath
@@ -10,11 +11,7 @@ BeforeAll {
     @{ schemaVersion = 1; plugins = @{ approved = @('a468dee5-c7a0-43e4-ae88-bb19158fe679') } } |
         ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $env:GERBER_CONFIG_PATH
     $core = Import-Module (Join-Path $coreDist 'Gerber/Gerber.psd1') -Force -PassThru
-    & $core {
-        param($PluginRoot)
-        Clear-GerberCommandRegistry
-        $null = Initialize-GerberCommandRegistry -PluginModulePathList @($PluginRoot)
-    } (Join-Path $root 'dist')
+    Initialize-GerberRoutingTestRegistry -Core $core -PluginRoot (Join-Path $root 'dist')
 }
 
 AfterAll {
@@ -24,7 +21,8 @@ AfterAll {
 
 Describe 'Extracted product command routing' {
     It 'resolves /<Path> under the ado namespace root with its arguments' -ForEach @(
-        @{ Path = 'ado list agents'; Root = 'ado'; Arguments = @('list', 'agents') }
+        @{ Path = 'ado agents list'; Root = 'ado'; Arguments = @('agents', 'list') }
+        @{ Path = 'ado agents update'; Root = 'ado'; Arguments = @('agents', 'update') }
         @{ Path = 'ado list team-members'; Root = 'ado'; Arguments = @('list', 'team-members') }
         @{ Path = 'ado branch find'; Root = 'ado'; Arguments = @('branch', 'find') }
         @{ Path = 'ado branch set-default'; Root = 'ado'; Arguments = @('branch', 'set-default') }
@@ -41,17 +39,12 @@ Describe 'Extracted product command routing' {
     }
 
     It 'preserves sorted suggestions, descriptions and absence of template subcommands' {
-        $snapshot = & $core {
-            [pscustomobject]@{
-                Search = Resolve-GerberCommand -InputText ado
-                Tags = Resolve-GerberCommand -InputText '/ado pipelines tags'
-                Create = Resolve-GerberCommand -InputText '/ado repository create'
-                Branch = Resolve-GerberCommand -InputText '/ado branch'
-            }
-        }
-        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/ado branch find', '/ado branch set-default', '/ado branch set-searchable', '/ado list agents', '/ado list team-members', '/ado pipelines tags delete', '/ado pipelines tags update', '/ado repository create')
+        $snapshot = Get-GerberRoutingTestSnapshot -Core $core
+        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/ado agents list', '/ado agents update', '/ado branch find', '/ado branch set-default', '/ado branch set-searchable', '/ado list team-members', '/ado pipelines tags delete', '/ado pipelines tags update', '/ado repository create')
         $snapshot.Tags.Suggestions.DisplayText | Should -Be @('/ado pipelines tags delete', '/ado pipelines tags update')
         $snapshot.Branch.Suggestions.DisplayText | Should -Be @('/ado branch find', '/ado branch set-default', '/ado branch set-searchable')
+        $snapshot.Agents.Suggestions.DisplayText | Should -Be @('/ado agents list', '/ado agents update')
+        $snapshot.Search.Suggestions.DisplayText | Should -Not -Contain '/ado list agents'
         $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create nuget'
         $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create domain'
         $snapshot.Create.Suggestions.DisplayText | Should -Not -Contain '/ado repository create cdm'

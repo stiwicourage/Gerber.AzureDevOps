@@ -83,7 +83,7 @@ def ado_ctrl_c_branch_find(context) -> None:
     title="Native Ctrl-C stops a secure Azure DevOps PAT prompt without storing input",
     categories=("ado", "cancellation", "credentials"),
     metadata=ScenarioMetadata(
-        commands=("ado list agents",), workflows=("interrupt:ado-credential",),
+        commands=("ado agents list",), workflows=("interrupt:ado-credential",),
         coverage=("dispatch", "navigation", "rendering"),
     ),
 )
@@ -93,7 +93,7 @@ def ado_ctrl_c_pat_setup(context) -> None:
     context.app.start(http_fixture=strict_http_fixture([]))
     configuration = (context.app.runtime_paths.scenario_root / "Gerber.AzureDevOps.json").read_text(encoding="utf-8")
     context.app.wait_for_prompt()
-    context.app.type("/ado list agents")
+    context.app.type("/ado agents list")
     context.app.press("ENTER")
     context.app.wait_for_text("Configure PAT")
     context.app.press("ENTER")
@@ -383,14 +383,14 @@ def _select_action_confirmation(context, *, default_cancel: bool = False) -> Non
     title="Core ADO agent report",
     categories=("core", "mission", "ado"),
     metadata=ScenarioMetadata(
-        commands=("ado list agents",),
-        workflows=("command:ado list agents",),
+        commands=("ado agents list",),
+        workflows=("command:ado agents list",),
         coverage=("dispatch", "workflow", "navigation", "rendering"),
     ),
 )
 def ado_agents_success(context) -> None:
     _start_ado_scenario(context, _agent_fixture())
-    context.app.type("/ado list agents")
+    context.app.type("/ado agents list")
     context.app.press("ENTER")
     context.app.wait_for_text("Build Pool")
     context.app.wait_for_text("deploy-01")
@@ -404,14 +404,14 @@ def ado_agents_success(context) -> None:
     title="Core ADO agent report recovery",
     categories=("core", "mission", "ado", "recovery"),
     metadata=ScenarioMetadata(
-        commands=("ado list agents",),
-        workflows=("command:ado list agents", "network:controlled-failure"),
+        commands=("ado agents list",),
+        workflows=("command:ado agents list", "network:controlled-failure"),
         coverage=("error-recovery",),
     ),
 )
 def ado_agents_recovery(context) -> None:
     _start_ado_scenario(context, strict_http_fixture([]))
-    context.app.type("/ado list agents")
+    context.app.type("/ado agents list")
     context.app.press("ENTER")
     context.app.wait_for_text("Unexpected Gerber Core terminal HTTP request.")
     context.app.press("ENTER")
@@ -827,8 +827,8 @@ for _command, _prompt in (
     title="GUID-owned PAT use leaves legacy credentials untouched",
     categories=("ado", "credentials", "isolation"),
     metadata=ScenarioMetadata(
-        commands=("ado list agents",),
-        workflows=("command:ado list agents", "credentials:guid-isolation"),
+        commands=("ado agents list",),
+        workflows=("command:ado agents list", "credentials:guid-isolation"),
         coverage=("dispatch", "workflow"),
     ),
 )
@@ -842,7 +842,7 @@ def legacy_pat_untouched(context) -> None:
     context.app.register_sensitive_value(legacy_pat)
     context.app.start(http_fixture=_agent_fixture())
     context.app.wait_for_prompt()
-    context.app.type("/ado list agents")
+    context.app.type("/ado agents list")
     context.app.press("ENTER")
     context.app.wait_for_text("build-01")
     state = context.app.credential_state()

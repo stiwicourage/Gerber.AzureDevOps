@@ -1,6 +1,7 @@
 # Lifecycle acceptance uses the actual built Core dependency and registry boundary,
 # not an injected API or private Core source. Module-session probes are test-owned.
 BeforeAll {
+    . (Join-Path $PSScriptRoot 'TestHelpers/GerberDependencyLifecycleTestSupport.ps1')
     $root = Split-Path -Parent $PSScriptRoot
     $script:lifecycleOriginalModulePath = $env:PSModulePath
     $script:lifecycleOriginalConfigPath = $env:GERBER_CONFIG_PATH
@@ -73,32 +74,12 @@ Describe 'Required dependency import versus plugin activation' {
     }
 
     It 'registers the approved enabled dependency once without running product operations' {
-        $env:GERBER_CONFIG_PATH = Join-Path $TestDrive 'approved/GerberCore.json'
-        $null = New-Item -ItemType Directory -Path (Split-Path $env:GERBER_CONFIG_PATH) -Force
-        @{ schemaVersion = 1; plugins = @{ approved = @($pluginId) } } |
-            ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $env:GERBER_CONFIG_PATH
-        Mock Invoke-RestMethod { throw 'Registration must not call REST.' } -ModuleName 'Gerber.AzureDevOps'
-        Mock Get-GerberCredential { throw 'Registration must not read credentials.' } -ModuleName Gerber
-        # Retain operation spies on the actual already-imported dependency.
-        # Normal forced-import callback binding is covered by CommandResolution integration.
-        Mock Import-Module { Get-Module 'Gerber.AzureDevOps' } -ModuleName Gerber -ParameterFilter {
-            [string]$Name -like '*Gerber.AzureDevOps*'
-        }
-        $snapshot = & $core {
-            param($PluginDist)
-            Clear-GerberCommandRegistry
-            $null = Initialize-GerberCommandRegistry -PluginModulePathList @($PluginDist)
-            $first = @(Get-GerberCommandRegistry | Where-Object OwnerName -EQ 'Gerber.AzureDevOps')
-            $null = Initialize-GerberCommandRegistry -PluginModulePathList @($PluginDist)
-            [pscustomobject]@{
-                First = $first
-                Second = @(Get-GerberCommandRegistry | Where-Object OwnerName -EQ 'Gerber.AzureDevOps')
-                Inventory = @(Get-GerberPluginInventory -PluginModulePathList @($PluginDist))
-            }
-        } $pluginDist
-        $snapshot.First.Count | Should -Be 9
+        Set-GerberLifecycleTestConfiguration -Path (Join-Path $TestDrive 'approved/GerberCore.json') -Plugins @{ approved = @($pluginId) }
+        Initialize-GerberLifecycleTestOperationMock
+        $snapshot = Get-GerberLifecycleRegistrationTestSnapshot -Core $core -PluginDist $pluginDist
+        $snapshot.First.Count | Should -Be 10
         $snapshot.Second.Name | Should -Be $snapshot.First.Name
-        @($snapshot.Second.Name | Select-Object -Unique).Count | Should -Be 9
+        @($snapshot.Second.Name | Select-Object -Unique).Count | Should -Be 10
         ($snapshot.Inventory | Where-Object Guid -EQ $pluginId).Loaded | Should -BeTrue
         Test-Path -LiteralPath (Join-Path (Split-Path $env:GERBER_CONFIG_PATH) 'Gerber.AzureDevOps.json') | Should -BeFalse
         Should -Invoke Invoke-RestMethod -ModuleName 'Gerber.AzureDevOps' -Times 0

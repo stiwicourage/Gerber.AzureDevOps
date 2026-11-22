@@ -4,6 +4,43 @@ BeforeAll {
 }
 
 Describe 'Get-GerberAdoAgentReport' {
+    Context 'Optional pool and member metadata' {
+        BeforeEach {
+            $script:metadataConfiguration = [pscustomobject]@{ CollectionUri = [uri]'https://ado.test/'; PoolApiVersion = '7.1'; CredentialIdentifier = 'test' }
+            Mock Invoke-GerberAdoRestRequest {
+                @{ value = @(@{ id = 12; name = 'item'; poolType = 'automation'; isHosted = $false
+                    size = 1; enabled = $false; assignedRequest = $null; pendingUpdate = @{ currentState = 'queued' } }) }
+            }
+        }
+
+        It 'preserves optional pool metadata' {
+            $pool = @(Get-GerberAdoPoolList -Configuration $script:metadataConfiguration -Pat 'pat' -PoolType automation)[0]
+            $pool.IsHosted | Should -BeFalse
+            $pool.PoolType | Should -Be 'automation'
+            $pool.Size | Should -Be 1
+        }
+
+        It 'preserves optional update metadata and requests work only when explicitly selected' {
+            $pool = @(Get-GerberAdoPoolList -Configuration $script:metadataConfiguration -Pat 'pat' -PoolType automation)[0]
+            $agent = @(Get-GerberAdoPoolAgentList -Configuration $script:metadataConfiguration -Pat 'pat' -Pool $pool -IncludeAssignedRequest)[0]
+            $agent.Id | Should -Be 12
+            $agent.Enabled | Should -BeFalse
+            $agent.WorkState | Should -Be 'idle'
+            $agent.PendingUpdate | Should -Be 'queued'
+            Should -Invoke Invoke-GerberAdoRestRequest -Times 1 -ParameterFilter { $Uri.Query -match 'includeAssignedRequest=true' }
+        }
+    }
+
+    It 'keeps absent optional metadata unknown under StrictMode' {
+        Set-StrictMode -Version Latest
+        $agent = ConvertTo-GerberAdoUpdateAgent -Agent ([pscustomobject]@{ name = 'minimal' })
+        $agent.Id | Should -BeNullOrEmpty
+        $agent.Enabled | Should -BeNullOrEmpty
+        $agent.WorkState | Should -Be 'unknown'
+        $agent.PendingUpdate | Should -Be 'unknown'
+        $agent.Version | Should -Be 'unknown'
+    }
+
     It 'writes Connecting status message before making HTTP calls' {
         Mock Write-GerberScreenLine {}
         Mock Get-GerberAdoConfiguration {

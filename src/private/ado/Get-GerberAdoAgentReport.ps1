@@ -55,80 +55,6 @@ function Get-GerberAdoAgentSection {
     }
 }
 
-function Get-GerberAdoPoolList {
-    [OutputType([object[]])]
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [pscustomobject]$Configuration,
-
-        [Parameter(Mandatory)]
-        [string]$Pat,
-
-        [Parameter(Mandatory)]
-        [string]$PoolType
-    )
-
-    return Get-GerberAdoPoolResourceList `
-        -Configuration $Configuration `
-        -Pat $Pat `
-    -RequestContext ([pscustomobject]@{
-        Uri = Get-GerberAdoPoolResourceUri `
-            -Configuration $Configuration `
-            -RelativePath '_apis/distributedtask/pools' `
-            -QueryParameterMap ([ordered]@{
-                poolType = $PoolType
-            })
-        Label = "$PoolType pools"
-        Converter = {
-            param($pool)
-
-            [pscustomobject]@{
-                Id = [int]$pool.id
-                Name = [string]$pool.name
-            }
-        }
-    })
-}
-
-function Get-GerberAdoPoolAgentList {
-    [OutputType([object[]])]
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [pscustomobject]$Configuration,
-
-        [Parameter(Mandatory)]
-        [string]$Pat,
-
-        [Parameter(Mandatory)]
-        [pscustomobject]$Pool
-    )
-
-    return Get-GerberAdoPoolResourceList `
-        -Configuration $Configuration `
-        -Pat $Pat `
-    -RequestContext ([pscustomobject]@{
-        Uri = Get-GerberAdoPoolResourceUri `
-            -Configuration $Configuration `
-            -RelativePath "_apis/distributedtask/pools/$($Pool.Id)/agents" `
-            -QueryParameterMap ([ordered]@{
-                includeCapabilities = 'false'
-            })
-        Label = "agents for pool '$($Pool.Name)'"
-        Converter = {
-            param($agent)
-
-            [pscustomobject]@{
-                Name = [string]$agent.name
-                Version = Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'version'
-                Status = Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'status'
-                OperatingSystem = Get-GerberAdoAgentOperatingSystemName -Description (Get-GerberAdoAgentPropertyText -Agent $agent -PropertyName 'osDescription')
-            }
-        }
-    })
-}
-
 function Get-GerberAdoPoolResourceList {
     [OutputType([object[]])]
     [CmdletBinding()]
@@ -143,15 +69,24 @@ function Get-GerberAdoPoolResourceList {
         [pscustomobject]$RequestContext
     )
 
-    $response = Invoke-GerberAdoRestRequest `
+    $response = Get-GerberAdoPoolResourceResponse -Configuration $Configuration -Pat $Pat -RequestContext $RequestContext
+    return ConvertTo-GerberAdoPoolResourceList -Response $response -RequestContext $RequestContext
+}
+
+function Get-GerberAdoPoolResourceResponse {
+    param([pscustomobject]$Configuration, [string]$Pat, [pscustomobject]$RequestContext)
+    return Invoke-GerberAdoRestRequest `
         -Uri $RequestContext.Uri `
         -Pat $Pat `
         -RequestLabel $RequestContext.Label `
         -CredentialIdentifier $Configuration.CredentialIdentifier
+}
 
+function ConvertTo-GerberAdoPoolResourceList {
+    param([AllowNull()][object]$Response, [pscustomobject]$RequestContext)
     return @(
-        foreach ($item in @(Get-GerberAdoResponseValueList -Response $response)) {
-            & $RequestContext.Converter $item
+        foreach ($item in @(Get-GerberAdoResponseValueList -Response $Response)) {
+            & $RequestContext.Converter $item $RequestContext
         }
     )
 }

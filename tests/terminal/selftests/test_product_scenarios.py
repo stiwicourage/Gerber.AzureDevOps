@@ -13,6 +13,7 @@ from scenarios.repository_create_support import (  # noqa: E402
     assert_repository_create_isolation, assert_repository_create_success_requests,
     repository_create_failure_fixture, repository_create_success_fixture,
 )
+from scenarios.agent_update import agent_update_fixture  # noqa: E402
 
 
 class FakeRepositoryApp:
@@ -31,6 +32,28 @@ class FakeRepositoryApp:
 
 
 class ProductScenarioTests(unittest.TestCase):
+    def test_agent_update_safety_scenarios_are_registered(self) -> None:
+        ids = {item.id for item in SCENARIO_REGISTRY}
+        self.assertTrue({
+            "ado-agents-update-success", "ado-agents-update-default-cancel",
+            "ado-agents-update-empty-selection", "ado-agents-update-empty",
+            "ado-agents-update-partial", "ado-agents-update-timeout",
+            "ado-agents-update-escape", "ado-agents-update-menu",
+            "ado-agents-update-interrupt", "ado-agents-update-read-recovery",
+            "ado-agents-update-batch-interrupt",
+            "ado-agents-update-accepted-then-interrupt",
+            "ado-agents-update-compact", "ado-agents-update-long-label",
+            "ado-agents-update-bad-request",
+        }.issubset(ids))
+
+    def test_agent_refresh_fixtures_use_the_preview_pool_route_with_explicit_status(self) -> None:
+        requests = agent_update_fixture(status=403)["requests"]
+        posts = [item for item in requests if item["method"] == "Post"]
+        self.assertEqual([403, 202], [item["statusCode"] for item in posts])
+        self.assertTrue(all(item["uri"].endswith("/messages?api-version=7.1-preview.1") for item in posts))
+        self.assertTrue(all("agentId" not in item["uri"] and "targetVersion" not in item["uri"] for item in posts))
+        self.assertTrue(all("expectedBody" not in item for item in posts))
+
     def test_native_ctrl_c_paths_are_permanent_product_regressions(self) -> None:
         ids = {item.id for item in SCENARIO_REGISTRY}
         self.assertTrue({"ado-ctrl-c-branch-find", "ado-ctrl-c-pat-setup"}.issubset(ids))

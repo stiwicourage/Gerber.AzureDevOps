@@ -3,10 +3,20 @@ function Get-GerberPlugin {
     .SYNOPSIS
     Registers Gerber.AzureDevOps commands through Gerber Plugin API v1.
     .DESCRIPTION
-    Returns the stable plugin identity and nine module-bound command definitions.
+    Returns the stable plugin identity and ten module-bound command definitions.
     Import and registration do not read configuration, credentials or Azure DevOps.
     Gerber Core supplies and binds the public UI, Configuration, Secrets and Http
     capabilities. Native Azure DevOps operations run only when a handler is invoked.
+    /ado agents list replaces /ado list agents without an alias.
+    /ado agents update interactively requests pool-wide asynchronous refresh;
+    Azure DevOps chooses the version, which may change major. Cancel is the default.
+    Pool selection uses one checkbox row per pool, without status/version sublines.
+    Confirmation lists only pools/counts and shared warnings, not individual agents.
+    Refresh uses a preview messages API and JSON null, matching the SDK contract.
+    Rejected requests retain a sanitized, truncated JSON server message when present.
+    Compact receipts share repeated explanations.
+    During an applied batch, Ctrl-C stops further requests after the current request
+    settles or times out, preserves accepted receipts and returns to Gerber.
     .PARAMETER Gerber
     The Plugin API context supplied by Gerber Core.
     .EXAMPLE
