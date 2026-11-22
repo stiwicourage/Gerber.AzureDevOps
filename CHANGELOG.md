@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.4.0] - 2026-11-22
+
+### Added
+
 - `/ado agents update`: explicit multi-pool selection for self-hosted BUILD/DEPLOY
   pools, combined snapshot preview, Cancel-default confirmation and revalidation.
   Requests are sequential, not retried and report partial/unknown outcomes.
@@ -24,14 +38,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - **Breaking:** `/ado agents list` replaces `/ado list agents` without an alias.
   `/ado list team-members` and existing agent-report formatting are unchanged.
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.3.0] - 2026-11-11
 
@@ -90,7 +96,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Hello scaffolding and dependency on the removed Core Ado API.
 
-[Unreleased]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.3...0.3.0
 [0.2.3]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.1...0.2.2

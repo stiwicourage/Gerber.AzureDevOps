@@ -4,6 +4,20 @@
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.4.0] - 2026-11-22
+
+### Added
+
 - `/ado agents update` selects multiple self-hosted BUILD/DEPLOY pools for
   pool-wide refresh. Review the combined preview; confirmation defaults to Cancel.
   ADO chooses the version, possibly changing major; requests run asynchronously.
@@ -20,14 +34,6 @@
 
 - **Breaking:** use `/ado agents list` instead of `/ado list agents`; no alias is
   retained. `/ado list team-members` is unchanged.
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.3.0] - 2026-11-11
 
@@ -73,7 +79,8 @@
 
 - Initial release of the Azure DevOps plugin for Gerber. See `CHANGELOG.md` for details.
 
-[Unreleased]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.3...0.3.0
 [0.2.3]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/stiwicourage/Gerber.AzureDevOps/compare/0.2.1...0.2.2
