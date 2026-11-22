@@ -21,8 +21,6 @@ function Get-GerberAdoAgentUpdateAttempt {
         return Start-GerberAdoAgentPoolUpdate -Context $Context -Pool $Pool -Confirm:$false
     } catch [System.OperationCanceledException] {
         return Get-GerberAdoAgentUpdateResult -Pool $Pool -State 'OutcomeUnknown'
-    } catch [System.Management.Automation.PipelineStoppedException] {
-        return Get-GerberAdoAgentUpdateResult -Pool $Pool -State 'OutcomeUnknown'
     }
 }
 

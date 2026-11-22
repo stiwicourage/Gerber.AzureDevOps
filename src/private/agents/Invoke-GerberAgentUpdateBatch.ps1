@@ -37,8 +37,18 @@ function Set-GerberAgentUpdateConsoleMode {
 
 function Read-GerberAgentUpdateCancellationKey {
     param()
-    if ([Console]::KeyAvailable) { return [Console]::ReadKey($true).KeyChar }
-    return $null
+    if (-not (Test-GerberAgentUpdateKeyAvailable)) { return $null }
+    return (Read-GerberAgentUpdateKey).KeyChar
+}
+
+function Test-GerberAgentUpdateKeyAvailable {
+    param()
+    return [Console]::KeyAvailable
+}
+
+function Read-GerberAgentUpdateKey {
+    param()
+    return [Console]::ReadKey($true)
 }
 
 function Test-GerberAgentUpdateCancellation {

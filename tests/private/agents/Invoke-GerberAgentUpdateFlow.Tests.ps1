@@ -86,3 +86,19 @@ Describe 'Interactive agent update flow' {
         Should -Invoke Invoke-GerberAdoAgentUpdate -Times 0
     }
 }
+
+Describe 'Agent update continue prompt' {
+    BeforeEach {
+        Mock Test-GerberMenuEscapeException { $Exception -is [System.OperationCanceledException] }
+    }
+
+    It 'treats Esc at the continue prompt as a normal return' {
+        Mock Wait-GerberContinue { throw [System.OperationCanceledException]::new() }
+        { Wait-GerberAgentUpdateContinue } | Should -Not -Throw
+    }
+
+    It 'propagates unexpected continue prompt failures' {
+        Mock Wait-GerberContinue { throw [System.IO.IOException]::new('Synthetic continue failure') }
+        { Wait-GerberAgentUpdateContinue } | Should -Throw '*Synthetic continue failure*'
+    }
+}
