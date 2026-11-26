@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- Pressing Esc twice quickly in a plugin menu (for example `/ado config`) now returns to the Gerber root menu instead of showing a "Return to the Gerber root menu" error.
+
 ### Security
 
 ## [0.4.0] - 2026-11-22

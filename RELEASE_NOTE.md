@@ -16,6 +16,8 @@
 
 ### Fixed
 
+- Pressing Esc twice quickly in a plugin menu now returns to the Gerber root menu without an error.
+
 ### Security
 
 ## [0.4.0] - 2026-11-22
