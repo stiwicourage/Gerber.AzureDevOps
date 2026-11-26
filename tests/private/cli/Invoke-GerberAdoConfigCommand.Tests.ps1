@@ -10,8 +10,8 @@ Describe 'Invoke-GerberAdoConfigCommand' {
         $script:answers = [System.Collections.Generic.Queue[string]]::new()
         Mock Start-GerberScreen {}
         Mock Write-GerberScreenLine {}
-        Mock Get-GerberAdoShowMicrosoftHostedPools { $script:current }
-        Mock Set-GerberAdoShowMicrosoftHostedPools { $script:current = $Value }
+        Mock Get-GerberAdoShowMicrosoftHostedPool { $script:current }
+        Mock Set-GerberAdoShowMicrosoftHostedPool { $script:current = $Value }
         Mock Read-GerberNumberedMenuPrompt {
             $script:prompts.Add($MenuItemList)
             $answer = $script:answers.Dequeue()
@@ -27,7 +27,7 @@ Describe 'Invoke-GerberAdoConfigCommand' {
         Invoke-GerberAdoConfigCommand
 
         $script:prompts[0].Label | Should -Match 'Microsoft-hosted pools: shown'
-        Should -Invoke Set-GerberAdoShowMicrosoftHostedPools -Times 0
+        Should -Invoke Set-GerberAdoShowMicrosoftHostedPool -Times 0
     }
 
     It 'toggles the setting off and reflects the new value on the next prompt' {
@@ -36,7 +36,7 @@ Describe 'Invoke-GerberAdoConfigCommand' {
 
         Invoke-GerberAdoConfigCommand
 
-        Should -Invoke Set-GerberAdoShowMicrosoftHostedPools -Times 1 -ParameterFilter { $Value -eq $false }
+        Should -Invoke Set-GerberAdoShowMicrosoftHostedPool -Times 1 -ParameterFilter { $Value -eq $false }
         $script:prompts[1].Label | Should -Match 'Microsoft-hosted pools: hidden'
     }
 
@@ -47,11 +47,11 @@ Describe 'Invoke-GerberAdoConfigCommand' {
 
         Invoke-GerberAdoConfigCommand
 
-        Should -Invoke Set-GerberAdoShowMicrosoftHostedPools -Times 1 -ParameterFilter { $Value -eq $true }
+        Should -Invoke Set-GerberAdoShowMicrosoftHostedPool -Times 1 -ParameterFilter { $Value -eq $true }
     }
 
     It 'shows an error and returns to Gerber when the configuration cannot be saved' {
-        Mock Set-GerberAdoShowMicrosoftHostedPools { throw [System.IO.InvalidDataException]::new('bad config') }
+        Mock Set-GerberAdoShowMicrosoftHostedPool { throw [System.IO.InvalidDataException]::new('bad config') }
         Mock Show-GerberTextBlock {}
         Mock Wait-GerberContinue {}
         $script:answers.Enqueue('showMicrosoftHostedPools')

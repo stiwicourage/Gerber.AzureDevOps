@@ -20,11 +20,11 @@ function Test-GerberAdoUserConfiguration {
         -AdoConfiguration $adoConfiguration `
         -ResolvedNameMap $resolvedNameMap `
         -Path $Path
-    Assert-GerberAdoSettings -AdoConfiguration $adoConfiguration -Path $Path
+    Assert-GerberAdoSettingSection -AdoConfiguration $adoConfiguration -Path $Path
     return $true
 }
 
-function Assert-GerberAdoSettings {
+function Assert-GerberAdoSettingSection {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]

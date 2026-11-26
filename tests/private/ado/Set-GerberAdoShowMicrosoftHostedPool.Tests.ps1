@@ -3,7 +3,7 @@ BeforeAll {
     Import-GerberSource -StartPath $PSScriptRoot
 }
 
-Describe 'Set-GerberAdoShowMicrosoftHostedPools' {
+Describe 'Set-GerberAdoShowMicrosoftHostedPool' {
     BeforeEach {
         $script:savedConfiguration = $null
         Mock Resolve-GerberUserConfigPath { '/tmp/gerber/config.json' }
@@ -13,7 +13,7 @@ Describe 'Set-GerberAdoShowMicrosoftHostedPools' {
     It 'creates the settings section and preserves unrelated configuration' {
         Mock Get-GerberUserConfiguration { @{ schemaVersion = 1; ado = @{ defaultProfile = 'example'; profiles = @{} } } }
 
-        Set-GerberAdoShowMicrosoftHostedPools -Value $false
+        Set-GerberAdoShowMicrosoftHostedPool -Value $false
 
         $script:savedConfiguration.schemaVersion | Should -Be 1
         $script:savedConfiguration.ado.defaultProfile | Should -Be 'example'
@@ -23,7 +23,7 @@ Describe 'Set-GerberAdoShowMicrosoftHostedPools' {
     It 'creates the ado section for an empty configuration' {
         Mock Get-GerberUserConfiguration { [ordered]@{} }
 
-        Set-GerberAdoShowMicrosoftHostedPools -Value $true
+        Set-GerberAdoShowMicrosoftHostedPool -Value $true
 
         $script:savedConfiguration.ado.settings.showMicrosoftHostedPools | Should -BeTrue
     }
@@ -31,7 +31,7 @@ Describe 'Set-GerberAdoShowMicrosoftHostedPools' {
     It 'updates the stored setting and keeps unknown settings' {
         Mock Get-GerberUserConfiguration { @{ ado = @{ settings = @{ showMicrosoftHostedPools = $true; other = 'keep' } } } }
 
-        Set-GerberAdoShowMicrosoftHostedPools -Value $false
+        Set-GerberAdoShowMicrosoftHostedPool -Value $false
 
         $script:savedConfiguration.ado.settings.showMicrosoftHostedPools | Should -BeFalse
         $script:savedConfiguration.ado.settings.other | Should -Be 'keep'

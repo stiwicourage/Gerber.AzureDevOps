@@ -6,7 +6,7 @@ function Invoke-GerberAdoConfigCommand {
         while ($true) {
             $choice = Read-GerberAdoConfigChoice
             if ($choice -ne 'showMicrosoftHostedPools') { return }
-            Set-GerberAdoShowMicrosoftHostedPools -Value (-not (Get-GerberAdoShowMicrosoftHostedPools))
+            Set-GerberAdoShowMicrosoftHostedPool -Value (-not (Get-GerberAdoShowMicrosoftHostedPool))
         }
     } catch {
         if (Test-GerberMenuEscapeException -Exception $_.Exception) { return }
@@ -24,7 +24,7 @@ function Read-GerberAdoConfigChoice {
     Start-GerberScreen -Name '/ado config'
     Write-GerberScreenLine -Text '/ado config'
     Write-GerberScreenLine
-    $state = if (Get-GerberAdoShowMicrosoftHostedPools) { 'shown' } else { 'hidden' }
+    $state = if (Get-GerberAdoShowMicrosoftHostedPool) { 'shown' } else { 'hidden' }
     $menuItems = @(
         [pscustomobject]@{
             Number      = 1

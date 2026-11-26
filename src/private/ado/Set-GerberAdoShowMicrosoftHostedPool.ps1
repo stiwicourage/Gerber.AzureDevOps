@@ -1,4 +1,4 @@
-function Set-GerberAdoShowMicrosoftHostedPools {
+function Set-GerberAdoShowMicrosoftHostedPool {
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory)]

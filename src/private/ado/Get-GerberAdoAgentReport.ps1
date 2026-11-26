@@ -9,7 +9,7 @@ function Get-GerberAdoAgentReport {
     $context = [pscustomobject]@{
         Configuration = $configuration
         Pat = $pat
-        IncludeHosted = Get-GerberAdoShowMicrosoftHostedPools
+        IncludeHosted = Get-GerberAdoShowMicrosoftHostedPool
     }
     $sectionList = @(
         Get-GerberAdoAgentSection -Context $context -SectionName 'BUILD' -PoolType 'automation'

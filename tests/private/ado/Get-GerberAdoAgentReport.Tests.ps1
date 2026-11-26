@@ -46,29 +46,29 @@ Describe 'Get-GerberAdoAgentReport' {
         }
 
         It 'omits Microsoft-hosted pools when the setting is off' {
-            Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
+            Mock Get-GerberAdoShowMicrosoftHostedPool { $false }
             $result = Get-GerberAdoAgentReport
             $result.Sections[0].PoolList.Name | Should -Be @('Self', 'Unknown')
         }
 
         It 'includes Microsoft-hosted pools sorted with the others when the setting is on' {
-            Mock Get-GerberAdoShowMicrosoftHostedPools { $true }
+            Mock Get-GerberAdoShowMicrosoftHostedPool { $true }
             $result = Get-GerberAdoAgentReport
             $result.Sections[0].PoolList.Name | Should -Be @('Azure Pipelines', 'Self', 'Unknown')
         }
     }
 
-    Context 'Get-GerberAdoShowMicrosoftHostedPools' {
+    Context 'Get-GerberAdoShowMicrosoftHostedPool' {
         It 'defaults to true when configuration or setting is absent' {
             Mock Get-GerberUserConfiguration { [ordered]@{} }
-            Get-GerberAdoShowMicrosoftHostedPools | Should -BeTrue
+            Get-GerberAdoShowMicrosoftHostedPool | Should -BeTrue
             Mock Get-GerberUserConfiguration { @{ ado = @{ profiles = @{} } } }
-            Get-GerberAdoShowMicrosoftHostedPools | Should -BeTrue
+            Get-GerberAdoShowMicrosoftHostedPool | Should -BeTrue
         }
 
         It 'returns the configured value case-insensitively' {
             Mock Get-GerberUserConfiguration { @{ ADO = @{ settings = @{ showMicrosoftHostedPools = $false } } } }
-            Get-GerberAdoShowMicrosoftHostedPools | Should -BeFalse
+            Get-GerberAdoShowMicrosoftHostedPool | Should -BeFalse
         }
     }
 
@@ -90,7 +90,7 @@ Describe 'Get-GerberAdoAgentReport' {
             }
         }
         Mock Resolve-GerberAdoPat { 'pat-value' }
-        Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
+        Mock Get-GerberAdoShowMicrosoftHostedPool { $false }
         Mock Get-GerberAdoPoolList { @() }
 
         Get-GerberAdoAgentReport
@@ -107,7 +107,7 @@ Describe 'Get-GerberAdoAgentReport' {
             }
         }
         Mock Resolve-GerberAdoPat { 'pat-value' }
-        Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
+        Mock Get-GerberAdoShowMicrosoftHostedPool { $false }
         Mock Get-GerberAdoPoolList {
             if ($PoolType -eq 'automation') {
                 return @(

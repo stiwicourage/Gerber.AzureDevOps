@@ -1,4 +1,4 @@
-function Get-GerberAdoShowMicrosoftHostedPools {
+function Get-GerberAdoShowMicrosoftHostedPool {
     [OutputType([bool])]
     [CmdletBinding()]
     param()
