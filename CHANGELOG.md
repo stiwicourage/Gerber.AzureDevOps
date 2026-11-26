@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `ado.settings.showMicrosoftHostedPools` in `Gerber.AzureDevOps.json`: Microsoft-hosted
+  pools (`isHosted: true`) are shown in `/ado agents list` by default; set the
+  boolean to `false` to omit them. `/ado config` toggles it interactively and registers as the eleventh command.
+
 ### Changed
 
 ### Deprecated

@@ -21,6 +21,21 @@ Describe 'Test-GerberAdoUserConfiguration' {
         } | Should -Not -Throw
     }
 
+    It 'accepts the Microsoft-hosted pool setting as a boolean' {
+        $configuration = @{ ado = @{ settings = @{ showMicrosoftHostedPools = $true; other = 'keep' } } }
+        { Test-GerberAdoUserConfiguration -Configuration $configuration -Path '/tmp/config.json' } | Should -Not -Throw
+    }
+
+    It 'rejects non-object ado.settings' {
+        { Test-GerberAdoUserConfiguration -Configuration @{ ado = @{ settings = 'x' } } -Path '/tmp/config.json' } |
+            Should -Throw "*property 'ado.settings' must be a JSON object*"
+    }
+
+    It 'rejects a non-boolean showMicrosoftHostedPools' {
+        { Test-GerberAdoUserConfiguration -Configuration @{ ado = @{ settings = @{ showMicrosoftHostedPools = 'yes' } } } -Path '/tmp/config.json' } |
+            Should -Throw "*property 'ado.settings.showMicrosoftHostedPools' must be a boolean*"
+    }
+
     It 'accepts an empty profile collection' {
         $configuration = ConvertTo-TestGerberConfiguration -Json @'
 {

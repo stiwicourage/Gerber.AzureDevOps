@@ -4,6 +4,10 @@
 
 ### Added
 
+- `/ado config` toggles whether Microsoft-hosted pools are listed by
+  `/ado agents list`. They are shown by default; the choice is stored as
+  `ado.settings.showMicrosoftHostedPools` in `Gerber.AzureDevOps.json`.
+
 ### Changed
 
 ### Deprecated

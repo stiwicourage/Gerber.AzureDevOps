@@ -23,6 +23,7 @@ Describe 'Extracted product command routing' {
     It 'resolves /<Path> under the ado namespace root with its arguments' -ForEach @(
         @{ Path = 'ado agents list'; Root = 'ado'; Arguments = @('agents', 'list') }
         @{ Path = 'ado agents update'; Root = 'ado'; Arguments = @('agents', 'update') }
+        @{ Path = 'ado config'; Root = 'ado'; Arguments = @('config') }
         @{ Path = 'ado list team-members'; Root = 'ado'; Arguments = @('list', 'team-members') }
         @{ Path = 'ado branch find'; Root = 'ado'; Arguments = @('branch', 'find') }
         @{ Path = 'ado branch set-default'; Root = 'ado'; Arguments = @('branch', 'set-default') }
@@ -40,7 +41,7 @@ Describe 'Extracted product command routing' {
 
     It 'preserves sorted suggestions, descriptions and absence of template subcommands' {
         $snapshot = Get-GerberRoutingTestSnapshot -Core $core
-        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/ado agents list', '/ado agents update', '/ado branch find', '/ado branch set-default', '/ado branch set-searchable', '/ado list team-members', '/ado pipelines tags delete', '/ado pipelines tags update', '/ado repository create')
+        $snapshot.Search.Suggestions.DisplayText | Should -Be @('/ado agents list', '/ado agents update', '/ado branch find', '/ado branch set-default', '/ado branch set-searchable', '/ado config', '/ado list team-members', '/ado pipelines tags delete', '/ado pipelines tags update', '/ado repository create')
         $snapshot.Tags.Suggestions.DisplayText | Should -Be @('/ado pipelines tags delete', '/ado pipelines tags update')
         $snapshot.Branch.Suggestions.DisplayText | Should -Be @('/ado branch find', '/ado branch set-default', '/ado branch set-searchable')
         $snapshot.Agents.Suggestions.DisplayText | Should -Be @('/ado agents list', '/ado agents update')

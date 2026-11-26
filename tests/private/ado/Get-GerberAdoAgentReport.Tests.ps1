@@ -31,6 +31,47 @@ Describe 'Get-GerberAdoAgentReport' {
         }
     }
 
+    Context 'Microsoft-hosted pool setting' {
+        BeforeEach {
+            Mock Get-GerberAdoConfiguration { [pscustomobject]@{ CredentialIdentifier = 'gerber:ado:example:pat' } }
+            Mock Resolve-GerberAdoPat { 'pat-value' }
+            Mock Get-GerberAdoPoolAgentList { @() }
+            Mock Get-GerberAdoPoolList {
+                @(
+                    [pscustomobject]@{ Id = 1; Name = 'Self'; IsHosted = $false }
+                    [pscustomobject]@{ Id = 2; Name = 'Azure Pipelines'; IsHosted = $true }
+                    [pscustomobject]@{ Id = 3; Name = 'Unknown'; IsHosted = $null }
+                )
+            }
+        }
+
+        It 'omits Microsoft-hosted pools when the setting is off' {
+            Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
+            $result = Get-GerberAdoAgentReport
+            $result.Sections[0].PoolList.Name | Should -Be @('Self', 'Unknown')
+        }
+
+        It 'includes Microsoft-hosted pools sorted with the others when the setting is on' {
+            Mock Get-GerberAdoShowMicrosoftHostedPools { $true }
+            $result = Get-GerberAdoAgentReport
+            $result.Sections[0].PoolList.Name | Should -Be @('Azure Pipelines', 'Self', 'Unknown')
+        }
+    }
+
+    Context 'Get-GerberAdoShowMicrosoftHostedPools' {
+        It 'defaults to true when configuration or setting is absent' {
+            Mock Get-GerberUserConfiguration { [ordered]@{} }
+            Get-GerberAdoShowMicrosoftHostedPools | Should -BeTrue
+            Mock Get-GerberUserConfiguration { @{ ado = @{ profiles = @{} } } }
+            Get-GerberAdoShowMicrosoftHostedPools | Should -BeTrue
+        }
+
+        It 'returns the configured value case-insensitively' {
+            Mock Get-GerberUserConfiguration { @{ ADO = @{ settings = @{ showMicrosoftHostedPools = $false } } } }
+            Get-GerberAdoShowMicrosoftHostedPools | Should -BeFalse
+        }
+    }
+
     It 'keeps absent optional metadata unknown under StrictMode' {
         Set-StrictMode -Version Latest
         $agent = ConvertTo-GerberAdoUpdateAgent -Agent ([pscustomobject]@{ name = 'minimal' })
@@ -49,6 +90,7 @@ Describe 'Get-GerberAdoAgentReport' {
             }
         }
         Mock Resolve-GerberAdoPat { 'pat-value' }
+        Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
         Mock Get-GerberAdoPoolList { @() }
 
         Get-GerberAdoAgentReport
@@ -65,6 +107,7 @@ Describe 'Get-GerberAdoAgentReport' {
             }
         }
         Mock Resolve-GerberAdoPat { 'pat-value' }
+        Mock Get-GerberAdoShowMicrosoftHostedPools { $false }
         Mock Get-GerberAdoPoolList {
             if ($PoolType -eq 'automation') {
                 return @(

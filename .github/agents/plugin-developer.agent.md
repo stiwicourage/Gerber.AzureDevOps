@@ -14,6 +14,12 @@ and retained command paths under generic Core roots,
 and stable manifest identity. Preserve host navigation and lifecycle semantics.
 Do not import private Core code or introduce another terminal UI framework.
 
+Use `codescene-quality`, `safeguarding-ai-generated-code`, `guiding-refactoring-with-code-health`
+and `building-maintainable-code` for measured Code Health (target 10.0 per touched file),
+`pester-testing` for tests, and `release-and-changelog` to update `CHANGELOG.md`
+and `RELEASE_NOTE.md` for every user-visible change. Run `pre_commit_code_health_safeguard`
+before handoff.
+
 Use the command-development skill for new handlers, the public-API skill for
 capability selection and the Nova skill for validation. Report exact tests,
 coverage, analyzer and CodeScene evidence; distinguish executed checks from

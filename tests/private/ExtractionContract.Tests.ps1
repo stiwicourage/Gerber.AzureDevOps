@@ -3,6 +3,7 @@ BeforeAll {
     $script:expectedPaths = @(
         'ado agents list'
         'ado agents update'
+        'ado config'
         'ado list team-members'
         'ado repository create'
         'ado branch find'

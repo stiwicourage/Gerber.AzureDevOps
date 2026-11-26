@@ -20,7 +20,37 @@ function Test-GerberAdoUserConfiguration {
         -AdoConfiguration $adoConfiguration `
         -ResolvedNameMap $resolvedNameMap `
         -Path $Path
+    Assert-GerberAdoSettings -AdoConfiguration $adoConfiguration -Path $Path
     return $true
+}
+
+function Assert-GerberAdoSettings {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$AdoConfiguration,
+
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    $settings = Get-GerberUserConfigurationPropertyValue -Configuration $AdoConfiguration -PropertyName 'settings'
+    if ($null -eq $settings) {
+        return
+    }
+
+    if (-not (Test-GerberUserConfigurationRootObject -Configuration $settings)) {
+        throw [System.IO.InvalidDataException]::new(
+            "Gerber user configuration file '$Path' property 'ado.settings' must be a JSON object."
+        )
+    }
+
+    $showHosted = Get-GerberUserConfigurationPropertyValue -Configuration $settings -PropertyName 'showMicrosoftHostedPools'
+    if (($null -ne $showHosted) -and ($showHosted -isnot [bool])) {
+        throw [System.IO.InvalidDataException]::new(
+            "Gerber user configuration file '$Path' property 'ado.settings.showMicrosoftHostedPools' must be a boolean."
+        )
+    }
 }
 
 function Assert-GerberAdoConfigurationRootObject {

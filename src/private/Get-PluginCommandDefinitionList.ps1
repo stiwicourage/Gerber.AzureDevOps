@@ -4,6 +4,7 @@ function Get-PluginCommandDefinitionList {
     return @(
         New-AdoCommandDefinition -Gerber $Gerber -Name 'ado agents list' -Description 'List Azure DevOps BUILD and DEPLOY agents' -HandlerName 'Invoke-GerberListAdoAgentsCommand'
         New-AdoCommandDefinition -Gerber $Gerber -Name 'ado agents update' -Description 'Request pool-wide self-hosted agent updates (ADO chooses version)' -HandlerName 'Invoke-GerberAgentUpdateFlow'
+        New-AdoCommandDefinition -Gerber $Gerber -Name 'ado config' -Description 'Change Azure DevOps plugin settings' -HandlerName 'Invoke-GerberAdoConfigCommand'
         New-AdoCommandDefinition -Gerber $Gerber -Name 'ado list team-members' -Description 'List Azure DevOps teams and members' -HandlerName 'Invoke-GerberListAdoTeamMembersCommand'
         New-AdoCommandDefinition -Gerber $Gerber -Name 'ado repository create' -Description 'Create a new repository from template' -HandlerName 'Show-GerberRepositoryCreateView'
         New-AdoCommandDefinition -Gerber $Gerber -Name 'ado branch find' -Description 'Search all repositories for a branch path' -HandlerName 'Invoke-GerberBranchFindFlow'

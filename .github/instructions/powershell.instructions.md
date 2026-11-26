@@ -9,7 +9,7 @@ Keep one exported function per matching file in `src/public/`; put handler
 factories and definitions in `src/private/`. Never hand-edit `dist/`.
 
 For registrations, preserve `Get-GerberPlugin`'s manifest-matching GUID and
-`ado` namespace identity and the ten product paths, including `ado agents list`
+`ado` namespace identity and the eleven product paths, including `ado agents list`
 and `ado agents update`. The former `ado list agents` route has no alias.
 Register leaf paths without a leading slash. Capture the supplied public API and
 a plugin-module-bound invocation rather than relying on a bare closure.

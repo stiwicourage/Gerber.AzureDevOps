@@ -18,7 +18,8 @@ public API contract. Use this workflow for a new leaf or changed command.
 4. Extend the built-module public integration test to execute the handler and
    verify manifest identity. Run `Invoke-NovaBuild`, `Invoke-NovaTest` and
    `Test-NovaBuild`; preserve the coverage gate.
-5. Update README and Unreleased changelog, run analyzer/CodeScene checks as
-   described in AGENTS.md and report evidence. Only when authorized, use an
+5. Update README, `docs/commands.md`, `CHANGELOG.md` and `RELEASE_NOTE.md` (see
+   `release-and-changelog`), run analyzer and CodeScene checks (see
+   `codescene-quality`) and report evidence. Only when authorized, use an
    isolated local publication and fresh Gerber host to verify the actual slash
    command. Do not equate registration with installation.

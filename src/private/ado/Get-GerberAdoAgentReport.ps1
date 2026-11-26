@@ -6,9 +6,14 @@ function Get-GerberAdoAgentReport {
     Write-GerberScreenLine -Text 'Connecting to Azure DevOps...'
     $configuration = Get-GerberAdoConfiguration
     $pat = Resolve-GerberAdoPat -Configuration $configuration
+    $context = [pscustomobject]@{
+        Configuration = $configuration
+        Pat = $pat
+        IncludeHosted = Get-GerberAdoShowMicrosoftHostedPools
+    }
     $sectionList = @(
-        Get-GerberAdoAgentSection -Configuration $configuration -Pat $pat -SectionName 'BUILD' -PoolType 'automation'
-        Get-GerberAdoAgentSection -Configuration $configuration -Pat $pat -SectionName 'DEPLOY' -PoolType 'deployment'
+        Get-GerberAdoAgentSection -Context $context -SectionName 'BUILD' -PoolType 'automation'
+        Get-GerberAdoAgentSection -Context $context -SectionName 'DEPLOY' -PoolType 'deployment'
     )
 
     return [pscustomobject]@{
@@ -23,10 +28,7 @@ function Get-GerberAdoAgentSection {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [pscustomobject]$Configuration,
-
-        [Parameter(Mandatory)]
-        [string]$Pat,
+        [pscustomobject]$Context,
 
         [Parameter(Mandatory)]
         [string]$SectionName,
@@ -35,7 +37,10 @@ function Get-GerberAdoAgentSection {
         [string]$PoolType
     )
 
+    $Configuration = $Context.Configuration
+    $Pat = $Context.Pat
     $poolList = @(Get-GerberAdoPoolList -Configuration $Configuration -Pat $Pat -PoolType $PoolType)
+    $poolList = @(Select-GerberAdoVisiblePool -PoolList $poolList -IncludeHosted:$Context.IncludeHosted)
     $sortedPoolList = @($poolList | Sort-Object -Property @{ Expression = { $_.Name.ToLowerInvariant() } }, Name)
     $resolvedPoolList = @(
         foreach ($pool in $sortedPoolList) {
@@ -53,6 +58,20 @@ function Get-GerberAdoAgentSection {
         PoolType = $PoolType
         PoolList = $resolvedPoolList
     }
+}
+
+function Select-GerberAdoVisiblePool {
+    [OutputType([object[]])]
+    [CmdletBinding()]
+    param(
+        [AllowEmptyCollection()]
+        [object[]]$PoolList,
+
+        [switch]$IncludeHosted
+    )
+
+    if ($IncludeHosted) { return $PoolList }
+    return @($PoolList | Where-Object { (Get-GerberAdoOptionalProperty -InputObject $_ -Name 'IsHosted') -ne $true })
 }
 
 function Get-GerberAdoPoolResourceList {

@@ -13,6 +13,7 @@ not a plugin-owned router or a restored hello route.
 | Path | Purpose |
 | --- | --- |
 | `/ado agents list` | List BUILD and DEPLOY agents. |
+| `/ado config` | Change plugin settings, e.g. show or hide Microsoft-hosted pools. |
 | `/ado agents update` | Select self-hosted pools and request ADO-managed agent refresh. |
 | `/ado list team-members` | List teams and their members. |
 | `/ado repository create` | Create and configure a repository from a template. |

@@ -5,8 +5,9 @@ BeforeAll {
 Describe 'Get-PluginCommandDefinitionList' {
     It 'declares product-only leaves under the existing generic roots' {
         $commands = @(Get-PluginCommandDefinitionList -Gerber (Get-PluginTestContext))
-        $commands.Count | Should -Be 10
+        $commands.Count | Should -Be 11
         $commands.Name | Should -Contain 'ado agents update'
+        $commands.Name | Should -Contain 'ado config'
         $commands.Name | Should -Contain 'ado repository create'
         $commands.Name | Should -Contain 'ado agents list'
         $commands.Name | Should -Not -Contain 'ado list agents'

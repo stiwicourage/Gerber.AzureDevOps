@@ -9,6 +9,10 @@ Gerber.AzureDevOps. Namespace identity is `ado`; Core supplies its parent menus.
 versions/status and report formatting. `/ado list team-members` lists the
 selected project's teams/members. These are GET/report workflows, not mutations.
 Use the shared continue prompt after a report; recoverable failures return to Gerber.
+Microsoft-hosted pools are listed by default. Use `/ado config` to toggle them
+(Esc returns), or set
+`"ado": { "settings": { "showMicrosoftHostedPools": false } }` in
+`Gerber.AzureDevOps.json`; a non-boolean value is rejected.
 The former `/ado list agents` route is removed without an alias;
 `/ado list team-members` is unchanged.
 
