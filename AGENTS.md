@@ -16,7 +16,7 @@ Nova generates `dist/`; do not hand-edit generated modules or manifests.
 `docs/schema` is schema tooling, not generated command help.
 
 Keep `Manifest.GUID` `a468dee5-c7a0-43e4-ae88-bb19158fe679`, version `0.1.0`,
-`PrivateData.Gerber.ApiVersion` `1`, namespace identity `ado`, and the canonical
+`PrivateData.Gerber.ApiVersion` `1`, `PrivateData.Gerber.Conformance` `RootNavigation`, namespace identity `ado`, and the canonical
 PSGallery repository declaration stable unless separately authorized.
 The descriptor `Namespace` and manifest `PrivateData.Gerber.Namespace` both
 declare `ado`; the registered command paths live under that `ado` namespace.

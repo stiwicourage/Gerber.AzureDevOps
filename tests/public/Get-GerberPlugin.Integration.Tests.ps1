@@ -23,6 +23,7 @@ Describe 'Get-GerberPlugin public API registration integration' {
     It 'exports the entry point with the project manifest GUID and API metadata' {
         $module.Guid.ToString('D') | Should -Be 'a468dee5-c7a0-43e4-ae88-bb19158fe679'
         $module.PrivateData.Gerber.ApiVersion | Should -Be '1'
+        $module.PrivateData.Gerber.Conformance | Should -Contain 'RootNavigation'
         $module.PrivateData.Gerber.Namespace | Should -BeExactly 'ado'
         $module.ExportedFunctions.Keys | Should -Contain 'Get-GerberPlugin'
     }

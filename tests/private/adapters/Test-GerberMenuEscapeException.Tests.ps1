@@ -14,16 +14,16 @@ Describe 'Test-GerberMenuEscapeException' {
         Test-GerberMenuEscapeException -Exception $exception | Should -BeTrue
     }
 
-    It 'treats a root navigation request as an escape so flows return instead of reporting an error' {
+    It 'rethrows a root navigation request so Core returns to the root menu instead of the flow handling it' {
         $exception = [System.InvalidOperationException]::new('Return to the Gerber root menu.')
         $exception.Data['GerberRootNavigation'] = $true
-        Test-GerberMenuEscapeException -Exception $exception | Should -BeTrue
+        { Test-GerberMenuEscapeException -Exception $exception } | Should -Throw 'Return to the Gerber root menu.'
     }
 
-    It 'treats a wrapped root navigation request as an escape' {
+    It 'rethrows a wrapped root navigation request' {
         $inner = [System.InvalidOperationException]::new('Return to the Gerber root menu.')
         $inner.Data['GerberRootNavigation'] = $true
-        Test-GerberMenuEscapeException -Exception ([System.Exception]::new('wrapped', $inner)) | Should -BeTrue
+        { Test-GerberMenuEscapeException -Exception ([System.Exception]::new('wrapped', $inner)) } | Should -Throw 'wrapped'
     }
 
     It 'does not treat an ordinary failure as an escape' {

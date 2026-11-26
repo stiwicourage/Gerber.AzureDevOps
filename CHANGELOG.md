@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Manifest declares `PrivateData.Gerber.Conformance = RootNavigation`, required by Gerber Core to load the plugin.
 - `ado.settings.showMicrosoftHostedPools` in `Gerber.AzureDevOps.json`: Microsoft-hosted
   pools (`isHosted: true`) are shown in `/ado agents list` by default; set the
   boolean to `false` to omit them. `/ado config` toggles it interactively and registers as the eleventh command.
@@ -19,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
-- Pressing Esc twice quickly in a plugin menu (for example `/ado config`) now returns to the Gerber root menu instead of showing a "Return to the Gerber root menu" error.
+- Pressing Esc twice quickly in a plugin menu (for example `/ado config`) now returns to the Gerber root menu from every `/ado` submenu instead of showing a "Return to the Gerber root menu" error or only going back one level.
 
 ### Security
 

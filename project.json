@@ -16,6 +16,7 @@
         "Plugin": true,
         "Namespace": "ado",
         "ApiVersion": "1",
+        "Conformance": ["RootNavigation"],
         "MinimumGerberVersion": "0.2.1-preview02",
         "Repository": {
           "Uri": "https://www.powershellgallery.com/api/v2",
